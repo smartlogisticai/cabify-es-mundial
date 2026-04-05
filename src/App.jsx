@@ -1,0 +1,53 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import { RequireAuth, RequireActive, RequireAdmin } from './components/ProtectedRoute'
+
+import Splash from './pages/Splash'
+import Login from './pages/Login'
+import Registro from './pages/Registro'
+import Pago from './pages/Pago'
+import Home from './pages/Home'
+import Pronostico from './pages/Pronostico'
+import ModuloFinal from './pages/ModuloFinal'
+import Tabla from './pages/Tabla'
+import Resultados from './pages/Resultados'
+import Historial from './pages/Historial'
+import Perfil from './pages/Perfil'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminPagos from './pages/admin/AdminPagos'
+import AdminResultados from './pages/admin/AdminResultados'
+import AdminTabla from './pages/admin/AdminTabla'
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Splash />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/pago" element={<RequireAuth><Pago /></RequireAuth>} />
+
+          <Route path="/home" element={<RequireActive><Home /></RequireActive>} />
+          <Route path="/pronostico/:id" element={<RequireActive><Pronostico /></RequireActive>} />
+          <Route path="/modulo-final" element={<RequireActive><ModuloFinal /></RequireActive>} />
+          <Route path="/tabla" element={<RequireActive><Tabla /></RequireActive>} />
+          <Route path="/resultados" element={<RequireActive><Resultados /></RequireActive>} />
+          <Route path="/historial" element={<RequireActive><Historial /></RequireActive>} />
+          <Route path="/perfil" element={<RequireActive><Perfil /></RequireActive>} />
+
+          <Route path="/admin" element={
+            <RequireAuth><RequireAdmin><AdminLayout /></RequireAdmin></RequireAuth>
+          }>
+            <Route index element={<Navigate to="/admin/pagos" replace />} />
+            <Route path="pagos" element={<AdminPagos />} />
+            <Route path="resultados" element={<AdminResultados />} />
+            <Route path="tabla" element={<AdminTabla />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  )
+}
