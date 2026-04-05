@@ -27,7 +27,7 @@ export default function Splash() {
           Entrar
         </button>
         <button
-          onClick={() => navigate('/registro')}
+          onClick={() => navigate('/bienvenida-registro')}
           className="w-full py-3 rounded-xl font-bold text-lg border-2"
           style={{ borderColor: '#7145D6', color: '#7145D6', background: 'transparent' }}
         >

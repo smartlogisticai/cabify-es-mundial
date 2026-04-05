@@ -5,6 +5,7 @@ import { RequireAuth, RequireActive, RequireAdmin } from './components/Protected
 import Splash from './pages/Splash'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
+import BienvenidaRegistro from './pages/BienvenidaRegistro'
 import Pago from './pages/Pago'
 import PagoConfirmado from './pages/PagoConfirmado'
 import Home from './pages/Home'
@@ -26,6 +27,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/bienvenida-registro" element={<BienvenidaRegistro />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/pago" element={<RequireAuth><Pago /></RequireAuth>} />
           <Route path="/pago-confirmado" element={<RequireAuth><PagoConfirmado /></RequireAuth>} />
