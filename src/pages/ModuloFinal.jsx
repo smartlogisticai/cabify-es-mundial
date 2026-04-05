@@ -48,7 +48,7 @@ export default function ModuloFinal() {
   return (
     <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
       <div className="px-5 pt-10 pb-6" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
-        <h1 className="text-2xl font-extrabold text-white">🌟 Módulo Final</h1>
+        <h1 className="text-2xl font-extrabold text-white">🐐 Módulo The GOAT</h1>
         <p className="text-gray-400 text-sm mt-1">Disponible durante la jornada 1 de grupos</p>
       </div>
 

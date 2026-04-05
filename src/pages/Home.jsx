@@ -119,6 +119,19 @@ export default function Home() {
         )}
       </div>
 
+      {/* Tarjeta Módulo The GOAT */}
+      <div className="px-5 mt-4">
+        <div className="rounded-2xl p-4 flex items-center justify-between cursor-pointer active:scale-95 transition-transform"
+          style={{ backgroundColor: '#231E3D', border: '1px solid rgba(113,69,214,0.4)' }}
+          onClick={() => navigate('/modulo-final')}>
+          <div>
+            <p className="font-bold text-white">🐐 Módulo The GOAT</p>
+            <p className="text-xs text-gray-400">Goleador del torneo · Balón de Oro · 60 pts</p>
+          </div>
+          <span className="text-gray-400 text-sm">→</span>
+        </div>
+      </div>
+
       {/* Filtros de jornada */}
       <div className="flex gap-2 px-5 mt-4">
         {['todas', '1', '2', '3'].map(j => (
@@ -234,16 +247,6 @@ export default function Home() {
           })
         )}
 
-        {/* Link módulo final */}
-        <div className="rounded-2xl p-4 flex items-center justify-between cursor-pointer"
-          style={{ backgroundColor: '#231E3D', border: '1px solid rgba(113,69,214,0.4)' }}
-          onClick={() => navigate('/modulo-final')}>
-          <div>
-            <p className="font-bold text-white">🌟 Módulo Final</p>
-            <p className="text-xs text-gray-400">Goleador del torneo · Balón de Oro · 60 pts</p>
-          </div>
-          <span className="text-gray-400 text-sm">→</span>
-        </div>
       </div>
 
       <BottomNav />
