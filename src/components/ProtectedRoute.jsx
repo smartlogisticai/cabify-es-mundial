@@ -16,7 +16,7 @@ export function RequireActive({ children }) {
     <div className="text-white">Cargando...</div>
   </div>
   if (!profile) return <Navigate to="/login" replace />
-  if (profile.estado === 'pendiente') return <Navigate to="/pago" replace />
+  if (profile.estado === 'pendiente') return <Navigate to="/pago-confirmado" replace />
   if (profile.estado === 'inactivo') return <Navigate to="/login" replace />
   return children
 }
