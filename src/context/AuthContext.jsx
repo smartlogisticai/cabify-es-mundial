@@ -31,16 +31,31 @@ export function AuthProvider({ children }) {
   }
 
   async function signUp({ email, password, nombre, apellido, alias }) {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const nombreCompleto = `${nombre} ${apellido}`
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { nombre: nombreCompleto, alias },
+      },
+    })
     if (error) throw error
-    await supabase.from('users').insert({
+    if (!data.user) throw new Error('No se pudo crear el usuario')
+
+    const { error: insertError } = await supabase.from('users').insert({
       id: data.user.id,
       email,
-      nombre: `${nombre} ${apellido}`,
+      nombre: nombreCompleto,
       alias,
       rol: 'participante',
       estado: 'pendiente',
     })
+    // Si el INSERT falla por RLS (email confirmation pendiente),
+    // el trigger on_auth_user_created en Supabase lo maneja como respaldo.
+    // Solo lanzamos el error si no es un conflicto de clave duplicada.
+    if (insertError && insertError.code !== '23505') throw insertError
+
     return data
   }
 

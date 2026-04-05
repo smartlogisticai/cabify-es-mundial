@@ -93,6 +93,32 @@ CREATE TABLE IF NOT EXISTS public.clasificacion_fases (
 );
 
 -- ============================================================
+-- Trigger: auto-insert en public.users al crear auth.users
+-- Esto cubre el caso donde el INSERT desde el cliente falla
+-- porque la sesión aún no está activa (email confirmation).
+-- ============================================================
+CREATE OR REPLACE FUNCTION handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.users (id, email, nombre, alias, rol, estado)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'nombre', ''),
+    COALESCE(NEW.raw_user_meta_data->>'alias', ''),
+    'participante',
+    'pendiente'
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+-- ============================================================
 -- Trigger: cierre_pronosticos = fecha_hora - 1 hora
 -- ============================================================
 CREATE OR REPLACE FUNCTION set_cierre_pronosticos()
