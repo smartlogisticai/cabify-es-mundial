@@ -43,9 +43,10 @@ Deno.serve(async (req) => {
     let pts_quintero_gol = 0
     let pts_quintero_asistencia = 0
 
-    // Marcador exacto
+    // Marcador exacto: 10 + 1 por cada gol adicional sobre 4 totales
     if (p.goles_local === partido.goles_local && p.goles_visitante === partido.goles_visitante) {
-      pts_marcador = 10
+      const totalGoles = partido.goles_local + partido.goles_visitante
+      pts_marcador = 10 + Math.max(0, totalGoles - 4)
     }
 
     // Resultado correcto

@@ -48,6 +48,7 @@ export default function Pronostico() {
   }
 
   const resultado = calcResultado(golesLocal, golesVisitante)
+  const ptsMarcador = 10 + Math.max(0, (golesLocal + golesVisitante) - 4)
 
   function handleSetResultado(res) {
     if (cerrado) return
@@ -252,7 +253,7 @@ export default function Pronostico() {
           <p className="text-xs text-gray-400 mb-2">Puntos posibles en este partido</p>
           <div className="flex gap-4 flex-wrap">
             <div className="text-center">
-              <p className="text-lg font-extrabold text-white">10</p>
+              <p className="text-lg font-extrabold" style={{ color: '#a78bfa' }}>{ptsMarcador}</p>
               <p className="text-xs text-gray-400">Marcador exacto</p>
             </div>
             <div className="text-center">
