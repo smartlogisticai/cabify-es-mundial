@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import BottomNav from '../components/BottomNav'
@@ -8,19 +9,20 @@ const FASES = ['todos', 'grupos', 'octavos', 'cuartos', 'semis', 'final']
 
 export default function Historial() {
   const { profile } = useAuth()
+  const navigate = useNavigate()
   const [pronosticos, setPronosticos] = useState([])
   const [filtroFase, setFiltroFase] = useState('todos')
   const [loading, setLoading] = useState(true)
+  const ahora = new Date()
 
   useEffect(() => {
     async function load() {
       setLoading(true)
-      let query = supabase
+      const { data } = await supabase
         .from('pronosticos')
         .select('*, partidos(*)')
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
-      const { data } = await query
       setPronosticos(data || [])
       setLoading(false)
     }
@@ -65,21 +67,40 @@ export default function Historial() {
             {filtrados.map(pr => {
               const p = pr.partidos
               if (!p) return null
-              const fecha = new Date(p.fecha_hora).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })
+
+              const editable = new Date(p.cierre_pronosticos) > ahora && p.estado !== 'terminado'
+              const fecha = new Date(p.fecha_hora).toLocaleDateString('es-CO', {
+                day: 'numeric', month: 'short', timeZone: 'America/Bogota',
+              })
 
               return (
-                <div key={pr.id} className="rounded-2xl p-4" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
+                <div key={pr.id} className="rounded-2xl p-4"
+                  style={{
+                    backgroundColor: '#231E3D',
+                    border: `1px solid ${editable ? '#1D9E75' : '#3d3560'}`,
+                  }}>
+
+                  {/* Fila superior: fase/fecha + estado edición + puntos */}
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-gray-400 capitalize">{p.fase} · {fecha}</span>
+                    <div className="flex items-center gap-2">
+                      {/* Indicador editable / cerrado */}
+                      <span className="w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: editable ? '#1D9E75' : '#6b7280' }} />
+                      <span className="text-xs text-gray-400 capitalize">{p.fase} · {fecha}</span>
+                    </div>
+
                     {pr.calculado ? (
                       <span className="font-extrabold text-sm" style={{ color: '#7145D6' }}>{pr.pts_total} pts</span>
                     ) : p.estado === 'terminado' ? (
                       <span className="text-xs text-gray-500">Calculando...</span>
+                    ) : editable ? (
+                      <span className="text-xs font-semibold text-green-400">Abierto</span>
                     ) : (
-                      <span className="text-xs text-green-400">Pendiente</span>
+                      <span className="text-xs text-gray-500">Cerrado</span>
                     )}
                   </div>
 
+                  {/* Equipos y marcador */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-1">
                       <FlagEmoji emoji={p.flag_local} size="md" team={p.equipo_local} />
@@ -95,6 +116,7 @@ export default function Historial() {
                     </div>
                   </div>
 
+                  {/* Resultado real */}
                   {p.estado === 'terminado' && (
                     <div className="mt-2 flex items-center justify-center gap-1 text-xs text-gray-400">
                       <span>Resultado real:</span>
@@ -102,6 +124,7 @@ export default function Historial() {
                     </div>
                   )}
 
+                  {/* Desglose de puntos */}
                   {pr.calculado && (
                     <div className="mt-2 flex gap-3 justify-center text-xs">
                       {pr.pts_marcador > 0 && <span className="text-green-400">+{pr.pts_marcador} marcador</span>}
@@ -109,6 +132,16 @@ export default function Historial() {
                       {pr.pts_quintero_gol > 0 && <span className="text-purple-400">+{pr.pts_quintero_gol} Q.gol</span>}
                       {pr.pts_quintero_asistencia > 0 && <span className="text-purple-400">+{pr.pts_quintero_asistencia} Q.asist</span>}
                     </div>
+                  )}
+
+                  {/* Botón editar */}
+                  {editable && (
+                    <button
+                      onClick={() => navigate(`/pronostico/${p.id}`)}
+                      className="w-full mt-3 py-2 rounded-xl text-sm font-bold active:scale-95 transition-transform"
+                      style={{ backgroundColor: 'rgba(29,158,117,0.15)', color: '#1D9E75', border: '1px solid rgba(29,158,117,0.4)' }}>
+                      ✏️ Editar pronóstico
+                    </button>
                   )}
                 </div>
               )
