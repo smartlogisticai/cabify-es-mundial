@@ -54,8 +54,10 @@ Deno.serve(async (req) => {
       pts_resultado = 5
     }
 
-    // Módulo Colombia: Sí correcto = 5pts, No correcto = 3pts
-    if (partido.es_colombia) {
+    // Módulo Colombia
+    // Si quintero_gol es NULL en el partido real → Quintero no jugó → sección anulada (0 pts para todos)
+    // Si tiene valor: Sí correcto = 5pts, No correcto = 3pts
+    if (partido.es_colombia && partido.quintero_gol !== null) {
       if (p.quintero_gol === partido.quintero_gol)
         pts_quintero_gol = partido.quintero_gol ? 5 : 3
       if (p.quintero_asistencia === partido.quintero_asistencia)

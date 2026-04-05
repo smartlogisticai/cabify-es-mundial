@@ -216,7 +216,16 @@ export default function Pronostico() {
         {partido.es_colombia && (
           <div className="rounded-2xl p-5 mt-4" style={{ backgroundColor: '#231E3D', border: '2px solid #7145D6' }}>
             <h3 className="font-bold text-white mb-1">🇨🇴 Módulo Quintero</h3>
-            <p className="text-xs text-gray-400 mb-4">¿Qué hará Juan Fernando Quintero en este partido?</p>
+            <p className="text-xs text-gray-400 mb-3">¿Qué hará Juan Fernando Quintero en este partido?</p>
+
+            {/* Aviso de anulación */}
+            <div className="rounded-xl px-3 py-2 mb-4 flex items-start gap-2"
+              style={{ backgroundColor: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.25)' }}>
+              <span className="text-sm flex-shrink-0">⚠️</span>
+              <p className="text-xs leading-relaxed" style={{ color: '#fcd34d' }}>
+                Si Quintero no es convocado o no juega el partido, esta sección se anula y todos reciben 0 puntos.
+              </p>
+            </div>
 
             <div className="flex flex-col gap-4">
               {/* Pregunta 1: Gol */}
