@@ -218,32 +218,50 @@ export default function Pronostico() {
             <h3 className="font-bold text-white mb-1">🇨🇴 Módulo Quintero</h3>
             <p className="text-xs text-gray-400 mb-4">¿Qué hará Juan Fernando Quintero en este partido?</p>
 
-            <div className="flex flex-col gap-3">
-              <label className="flex items-center justify-between cursor-pointer">
-                <div>
-                  <p className="font-semibold text-white">Quintero hace gol</p>
-                  <p className="text-xs text-gray-400">+5 puntos si aciertas</p>
+            <div className="flex flex-col gap-4">
+              {/* Pregunta 1: Gol */}
+              <div>
+                <p className="text-sm font-semibold text-white mb-2">¿Quintero anota gol?</p>
+                <div className="flex gap-2">
+                  {[{ val: true, label: '✅ Sí', pts: '+5pts' }, { val: false, label: '❌ No', pts: '+3pts' }].map(({ val, label, pts }) => {
+                    const activo = quinteroGol === val
+                    return (
+                      <button key={String(val)} disabled={cerrado}
+                        onClick={() => setQuinteroGol(val)}
+                        className="flex-1 py-3 rounded-xl font-bold text-sm active:scale-95 transition-transform disabled:opacity-50"
+                        style={{
+                          backgroundColor: activo ? '#7145D6' : '#2e2a4a',
+                          border: activo ? '2px solid #9f72f7' : '2px solid transparent',
+                          color: '#fff',
+                        }}>
+                        {label} <span style={{ color: activo ? '#e9d5ff' : '#9ca3af', fontSize: '11px' }}>{pts}</span>
+                      </button>
+                    )
+                  })}
                 </div>
-                <button disabled={cerrado} onClick={() => setQuinteroGol(v => !v)}
-                  className="w-12 h-6 rounded-full transition-all relative disabled:opacity-40 flex-shrink-0"
-                  style={{ backgroundColor: quinteroGol ? '#7145D6' : '#3d3560' }}>
-                  <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
-                    style={{ left: quinteroGol ? '26px' : '2px' }} />
-                </button>
-              </label>
+              </div>
 
-              <label className="flex items-center justify-between cursor-pointer">
-                <div>
-                  <p className="font-semibold text-white">Quintero hace asistencia</p>
-                  <p className="text-xs text-gray-400">+5 puntos si aciertas</p>
+              {/* Pregunta 2: Asistencia */}
+              <div>
+                <p className="text-sm font-semibold text-white mb-2">¿Quintero da asistencia?</p>
+                <div className="flex gap-2">
+                  {[{ val: true, label: '✅ Sí', pts: '+5pts' }, { val: false, label: '❌ No', pts: '+3pts' }].map(({ val, label, pts }) => {
+                    const activo = quinteroAsistencia === val
+                    return (
+                      <button key={String(val)} disabled={cerrado}
+                        onClick={() => setQuinteroAsistencia(val)}
+                        className="flex-1 py-3 rounded-xl font-bold text-sm active:scale-95 transition-transform disabled:opacity-50"
+                        style={{
+                          backgroundColor: activo ? '#7145D6' : '#2e2a4a',
+                          border: activo ? '2px solid #9f72f7' : '2px solid transparent',
+                          color: '#fff',
+                        }}>
+                        {label} <span style={{ color: activo ? '#e9d5ff' : '#9ca3af', fontSize: '11px' }}>{pts}</span>
+                      </button>
+                    )
+                  })}
                 </div>
-                <button disabled={cerrado} onClick={() => setQuinteroAsistencia(v => !v)}
-                  className="w-12 h-6 rounded-full transition-all relative disabled:opacity-40 flex-shrink-0"
-                  style={{ backgroundColor: quinteroAsistencia ? '#7145D6' : '#3d3560' }}>
-                  <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
-                    style={{ left: quinteroAsistencia ? '26px' : '2px' }} />
-                </button>
-              </label>
+              </div>
             </div>
           </div>
         )}
@@ -262,11 +280,11 @@ export default function Pronostico() {
             </div>
             {partido.es_colombia && <>
               <div className="text-center">
-                <p className="text-lg font-extrabold text-white">5</p>
+                <p className="text-lg font-extrabold text-white">{quinteroGol ? 5 : 3}</p>
                 <p className="text-xs text-gray-400">Quintero gol</p>
               </div>
               <div className="text-center">
-                <p className="text-lg font-extrabold text-white">5</p>
+                <p className="text-lg font-extrabold text-white">{quinteroAsistencia ? 5 : 3}</p>
                 <p className="text-xs text-gray-400">Quintero asist.</p>
               </div>
             </>}

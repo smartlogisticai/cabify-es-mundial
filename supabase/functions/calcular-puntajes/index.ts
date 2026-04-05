@@ -54,10 +54,12 @@ Deno.serve(async (req) => {
       pts_resultado = 5
     }
 
-    // Módulo Colombia
+    // Módulo Colombia: Sí correcto = 5pts, No correcto = 3pts
     if (partido.es_colombia) {
-      if (p.quintero_gol === partido.quintero_gol) pts_quintero_gol = 5
-      if (p.quintero_asistencia === partido.quintero_asistencia) pts_quintero_asistencia = 5
+      if (p.quintero_gol === partido.quintero_gol)
+        pts_quintero_gol = partido.quintero_gol ? 5 : 3
+      if (p.quintero_asistencia === partido.quintero_asistencia)
+        pts_quintero_asistencia = partido.quintero_asistencia ? 5 : 3
     }
 
     const pts_total = pts_marcador + pts_resultado + pts_quintero_gol + pts_quintero_asistencia
