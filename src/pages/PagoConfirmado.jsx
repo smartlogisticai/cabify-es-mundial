@@ -21,7 +21,7 @@ export default function PagoConfirmado() {
         <img
           src={teamImg}
           alt="Equipo Cabify"
-          className="w-64 rounded-3xl object-cover shadow-lg"
+          className="w-64 h-64 rounded-3xl object-cover object-center shadow-lg"
           style={{ border: '2px solid rgba(113,69,214,0.4)' }}
         />
 
