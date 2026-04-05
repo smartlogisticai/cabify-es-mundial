@@ -49,6 +49,11 @@ export default function Pronostico() {
 
   const resultado = calcResultado(golesLocal, golesVisitante)
   const ptsMarcador = 10 + Math.max(0, (golesLocal + golesVisitante) - 4)
+  const ptsQ = partido ? {
+    gol: quinteroGol ? 5 : 3,
+    asist: quinteroAsistencia ? 5 : 3,
+  } : { gol: 3, asist: 3 }
+  const ptsTotalPosible = ptsMarcador + 5 + (partido?.es_colombia ? ptsQ.gol + ptsQ.asist : 0)
 
   function handleSetResultado(res) {
     if (cerrado) return
@@ -277,27 +282,45 @@ export default function Pronostico() {
 
         {/* Puntos posibles */}
         <div className="rounded-2xl p-4 mt-4" style={{ backgroundColor: 'rgba(113,69,214,0.08)', border: '1px solid rgba(113,69,214,0.25)' }}>
-          <p className="text-xs text-gray-400 mb-2">Puntos posibles en este partido</p>
-          <div className="flex gap-4 flex-wrap">
-            <div className="text-center">
-              <p className="text-lg font-extrabold" style={{ color: '#a78bfa' }}>{ptsMarcador}</p>
-              <p className="text-xs text-gray-400">Marcador exacto</p>
+          {/* Total destacado */}
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs text-gray-400">Si aciertas todo</p>
+            <p className="text-2xl font-extrabold" style={{ color: '#a78bfa' }}>
+              {ptsTotalPosible} <span className="text-sm font-semibold">pts</span>
+            </p>
+          </div>
+
+          {/* Desglose */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex flex-col items-center px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+              <p className="text-base font-extrabold text-white">{ptsMarcador}</p>
+              <p className="text-[10px] text-gray-400 leading-tight text-center">Marcador</p>
             </div>
-            <div className="text-center">
-              <p className="text-lg font-extrabold text-white">5</p>
-              <p className="text-xs text-gray-400">Resultado correcto</p>
+            <span className="text-gray-600 font-bold">+</span>
+            <div className="flex flex-col items-center px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+              <p className="text-base font-extrabold text-white">5</p>
+              <p className="text-[10px] text-gray-400 leading-tight text-center">Resultado</p>
             </div>
             {partido.es_colombia && <>
-              <div className="text-center">
-                <p className="text-lg font-extrabold text-white">{quinteroGol ? 5 : 3}</p>
-                <p className="text-xs text-gray-400">Quintero gol</p>
+              <span className="text-gray-600 font-bold">+</span>
+              <div className="flex flex-col items-center px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                <p className="text-base font-extrabold text-white">{ptsQ.gol}</p>
+                <p className="text-[10px] text-gray-400 leading-tight text-center">Q. gol</p>
               </div>
-              <div className="text-center">
-                <p className="text-lg font-extrabold text-white">{quinteroAsistencia ? 5 : 3}</p>
-                <p className="text-xs text-gray-400">Quintero asist.</p>
+              <span className="text-gray-600 font-bold">+</span>
+              <div className="flex flex-col items-center px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                <p className="text-base font-extrabold text-white">{ptsQ.asist}</p>
+                <p className="text-[10px] text-gray-400 leading-tight text-center">Q. asist.</p>
               </div>
             </>}
           </div>
+
+          {/* Rango Colombia */}
+          {partido.es_colombia && (
+            <p className="text-[10px] text-gray-500 mt-2">
+              Máx. {ptsMarcador + 15} pts (todo Sí) · Mín. {ptsMarcador + 11} pts (todo No)
+            </p>
+          )}
         </div>
 
         {error && <p className="text-red-400 text-sm text-center mt-3">{error}</p>}
