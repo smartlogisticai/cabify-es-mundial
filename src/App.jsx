@@ -6,6 +6,7 @@ import Splash from './pages/Splash'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
 import Pago from './pages/Pago'
+import PagoConfirmado from './pages/PagoConfirmado'
 import Home from './pages/Home'
 import Pronostico from './pages/Pronostico'
 import ModuloFinal from './pages/ModuloFinal'
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/pago" element={<RequireAuth><Pago /></RequireAuth>} />
+          <Route path="/pago-confirmado" element={<RequireAuth><PagoConfirmado /></RequireAuth>} />
 
           <Route path="/home" element={<RequireActive><Home /></RequireActive>} />
           <Route path="/pronostico/:id" element={<RequireActive><Pronostico /></RequireActive>} />

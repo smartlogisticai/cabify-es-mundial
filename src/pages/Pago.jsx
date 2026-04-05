@@ -54,6 +54,12 @@ export default function Pago() {
           <p className="text-xs text-gray-400 mt-1">Con 50 participantes · 100% va a premios</p>
         </div>
 
+        <button onClick={() => navigate('/pago-confirmado')}
+          className="w-full py-4 rounded-2xl font-bold text-white text-base mb-3"
+          style={{ backgroundColor: '#7145D6' }}>
+          ✅ Ya hice mi pago
+        </button>
+
         <button onClick={handleSignOut}
           className="w-full py-3 rounded-xl font-semibold text-gray-400 border"
           style={{ borderColor: '#3d3560', backgroundColor: 'transparent' }}>
