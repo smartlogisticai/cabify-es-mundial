@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import BottomNav from '../components/BottomNav'
+import FlagEmoji from '../components/FlagEmoji'
 
 function agruparPorFecha(partidos) {
   const grupos = {}
@@ -199,13 +200,13 @@ export default function Home() {
                         {/* Equipos */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <span className="text-2xl flex-shrink-0">{p.flag_local}</span>
+                            <FlagEmoji emoji={p.flag_local} size="md" className="flex-shrink-0" />
                             <span className="font-bold text-white text-sm truncate">{p.equipo_local}</span>
                           </div>
                           <span className="text-gray-500 font-bold text-sm px-2 flex-shrink-0">VS</span>
                           <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                             <span className="font-bold text-white text-sm truncate text-right">{p.equipo_visitante}</span>
-                            <span className="text-2xl flex-shrink-0">{p.flag_visitante}</span>
+                            <FlagEmoji emoji={p.flag_visitante} size="md" className="flex-shrink-0" />
                           </div>
                         </div>
 

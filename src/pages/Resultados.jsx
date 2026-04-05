@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 import BottomNav from '../components/BottomNav'
+import FlagEmoji from '../components/FlagEmoji'
 
 export default function Resultados() {
   const [partidos, setPartidos] = useState([])
@@ -80,7 +81,7 @@ export default function Resultados() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 flex-1">
-                        <span className="text-2xl">{p.flag_local}</span>
+                        <FlagEmoji emoji={p.flag_local} size="md" />
                         <span className="font-bold text-white text-sm">{p.equipo_local}</span>
                       </div>
                       {terminado ? (
@@ -92,7 +93,7 @@ export default function Resultados() {
                       )}
                       <div className="flex items-center gap-2 flex-1 justify-end">
                         <span className="font-bold text-white text-sm">{p.equipo_visitante}</span>
-                        <span className="text-2xl">{p.flag_visitante}</span>
+                        <FlagEmoji emoji={p.flag_visitante} size="md" />
                       </div>
                     </div>
                     {terminado && p.es_colombia && (

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import BottomNav from '../components/BottomNav'
+import FlagEmoji from '../components/FlagEmoji'
 
 export default function Pronostico() {
   const { id } = useParams()
@@ -98,7 +99,7 @@ export default function Pronostico() {
           <div className="flex items-center justify-between gap-4">
             {/* Local */}
             <div className="flex flex-col items-center flex-1">
-              <span className="text-4xl">{partido.flag_local}</span>
+              <FlagEmoji emoji={partido.flag_local} size="xl" />
               <span className="text-sm font-bold text-white mt-2 text-center">{partido.equipo_local}</span>
             </div>
 
@@ -129,7 +130,7 @@ export default function Pronostico() {
 
             {/* Visitante */}
             <div className="flex flex-col items-center flex-1">
-              <span className="text-4xl">{partido.flag_visitante}</span>
+              <FlagEmoji emoji={partido.flag_visitante} size="xl" />
               <span className="text-sm font-bold text-white mt-2 text-center">{partido.equipo_visitante}</span>
             </div>
           </div>
