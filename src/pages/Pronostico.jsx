@@ -130,7 +130,7 @@ export default function Pronostico() {
 
             {/* Local */}
             <div className="flex flex-col items-center gap-2">
-              <FlagEmoji emoji={partido.flag_local} size="xl" />
+              <FlagEmoji emoji={partido.flag_local} size="xl" team={partido.equipo_local} />
               <span className="text-xs font-bold text-white text-center leading-tight">
                 {partido.equipo_local}
               </span>
@@ -163,7 +163,7 @@ export default function Pronostico() {
 
             {/* Visitante */}
             <div className="flex flex-col items-center gap-2">
-              <FlagEmoji emoji={partido.flag_visitante} size="xl" />
+              <FlagEmoji emoji={partido.flag_visitante} size="xl" team={partido.equipo_visitante} />
               <span className="text-xs font-bold text-white text-center leading-tight">
                 {partido.equipo_visitante}
               </span>

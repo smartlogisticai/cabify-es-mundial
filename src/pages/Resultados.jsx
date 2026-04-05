@@ -81,7 +81,7 @@ export default function Resultados() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 flex-1">
-                        <FlagEmoji emoji={p.flag_local} size="md" />
+                        <FlagEmoji emoji={p.flag_local} size="md" team={p.equipo_local} />
                         <span className="font-bold text-white text-sm">{p.equipo_local}</span>
                       </div>
                       {terminado ? (
@@ -93,7 +93,7 @@ export default function Resultados() {
                       )}
                       <div className="flex items-center gap-2 flex-1 justify-end">
                         <span className="font-bold text-white text-sm">{p.equipo_visitante}</span>
-                        <FlagEmoji emoji={p.flag_visitante} size="md" />
+                        <FlagEmoji emoji={p.flag_visitante} size="md" team={p.equipo_visitante} />
                       </div>
                     </div>
                     {terminado && p.es_colombia && (

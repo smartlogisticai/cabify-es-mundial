@@ -1,64 +1,47 @@
 /**
  * FlagEmoji
- * Renders a flag emoji as an <img> from flagcdn.com to ensure cross-platform
- * display (Windows does not render regional-indicator emoji as flag images).
- *
- * Accepts the emoji string stored in flag_local / flag_visitante from Supabase.
- * Handles standard 2-letter regional indicator emoji AND tag-sequence flags
- * (England 🏴󠁧󠁢󠁥󠁮󠁧󠁿, Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿).
+ * Renders a flag emoji directly from the database field.
+ * On macOS/iOS/Android it shows the actual flag image.
+ * On Windows it shows the 2-letter country code (browser limitation).
+ * If emoji is null/empty, falls back to the first 2 letters of the team name.
  */
 
-// Tag-sequence flags that need a special flagcdn code
-const TAG_FLAGS = {
-  '🏴󠁧󠁢󠁥󠁮󠁧󠁿': 'gb-eng',
-  '🏴󠁧󠁢󠁳󠁣󠁴󠁿': 'gb-sct',
-  '🏴󠁧󠁢󠁷󠁬󠁳󠁿': 'gb-wls',
+const SIZE = {
+  sm: '20px',
+  md: '28px',
+  lg: '40px',
+  xl: '52px',
 }
 
-function emojiToCode(emoji) {
-  if (!emoji) return null
-  if (TAG_FLAGS[emoji]) return TAG_FLAGS[emoji]
+export default function FlagEmoji({ emoji, size = 'md', team = '', className = '' }) {
+  const fontSize = SIZE[size] || SIZE.md
 
-  // Regional indicator symbols: U+1F1E6 (A) … U+1F1FF (Z)
-  const points = [...emoji]
-    .map(c => c.codePointAt(0))
-    .filter(cp => cp >= 0x1F1E6 && cp <= 0x1F1FF)
-    .map(cp => String.fromCharCode(cp - 0x1F1E6 + 65))
-
-  if (points.length === 2) return points.join('').toLowerCase()
-  return null
-}
-
-const SIZE_MAP = {
-  sm: 'w20',   // 20px wide
-  md: 'w32',   // 32px wide
-  lg: 'w48',   // 48px wide
-  xl: 'w64',   // 64px wide
-}
-
-export default function FlagEmoji({ emoji, size = 'md', className = '' }) {
-  const code = emojiToCode(emoji)
-
-  if (!code) {
-    // Fallback: render the raw emoji text
-    return <span className={className}>{emoji}</span>
+  if (!emoji) {
+    const initials = team.trim().slice(0, 2).toUpperCase()
+    return (
+      <span
+        className={`inline-flex items-center justify-center rounded font-bold text-white flex-shrink-0 ${className}`}
+        style={{
+          width: fontSize,
+          height: fontSize,
+          fontSize: `calc(${fontSize} * 0.42)`,
+          backgroundColor: '#3d3560',
+          letterSpacing: '-0.5px',
+        }}
+      >
+        {initials || '?'}
+      </span>
+    )
   }
 
-  const sizeKey = SIZE_MAP[size] || 'w32'
-  const url = `https://flagcdn.com/${sizeKey}/${code}.png`
-
-  // height ≈ 75% of width (3:2 flag ratio)
-  const widthPx = parseInt(sizeKey.replace('w', ''), 10)
-  const heightPx = Math.round(widthPx * 0.75)
-
   return (
-    <img
-      src={url}
-      alt={emoji}
-      width={widthPx}
-      height={heightPx}
-      className={`inline-block object-contain rounded-sm ${className}`}
-      loading="lazy"
-    />
+    <span
+      className={`inline-block leading-none flex-shrink-0 ${className}`}
+      style={{ fontSize }}
+      role="img"
+      aria-label={team}
+    >
+      {emoji}
+    </span>
   )
 }

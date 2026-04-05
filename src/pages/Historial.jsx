@@ -82,7 +82,7 @@ export default function Historial() {
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-1">
-                      <FlagEmoji emoji={p.flag_local} size="md" />
+                      <FlagEmoji emoji={p.flag_local} size="md" team={p.equipo_local} />
                       <span className="text-sm font-bold text-white">{p.equipo_local}</span>
                     </div>
                     <div className="flex flex-col items-center px-2">
@@ -91,7 +91,7 @@ export default function Historial() {
                     </div>
                     <div className="flex items-center gap-2 flex-1 justify-end">
                       <span className="text-sm font-bold text-white">{p.equipo_visitante}</span>
-                      <FlagEmoji emoji={p.flag_visitante} size="md" />
+                      <FlagEmoji emoji={p.flag_visitante} size="md" team={p.equipo_visitante} />
                     </div>
                   </div>
 
