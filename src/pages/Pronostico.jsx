@@ -47,11 +47,25 @@ export default function Pronostico() {
     return 'empate'
   }
 
+  const resultado = calcResultado(golesLocal, golesVisitante)
+
+  function handleSetResultado(res) {
+    if (cerrado) return
+    if (res === 'local' && golesLocal <= golesVisitante) {
+      setGolesLocal(golesVisitante + 1)
+    } else if (res === 'empate') {
+      const eq = Math.max(golesLocal, golesVisitante)
+      setGolesLocal(eq)
+      setGolesVisitante(eq)
+    } else if (res === 'visitante' && golesVisitante <= golesLocal) {
+      setGolesVisitante(golesLocal + 1)
+    }
+  }
+
   async function handleSave() {
     if (cerrado) return
     setSaving(true)
     setError('')
-    const resultado = calcResultado(golesLocal, golesVisitante)
     const data = {
       user_id: profile.id,
       partido_id: id,
@@ -73,18 +87,30 @@ export default function Pronostico() {
     setTimeout(() => navigate('/home'), 1200)
   }
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}><div className="text-white">Cargando...</div></div>
-  if (!partido) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}><div className="text-white">Partido no encontrado</div></div>
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+      <div className="text-white">Cargando...</div>
+    </div>
+  )
+  if (!partido) return (
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+      <div className="text-white">Partido no encontrado</div>
+    </div>
+  )
 
-  const hora = new Date(partido.fecha_hora).toLocaleString('es-CO', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })
+  const hora = new Date(partido.fecha_hora).toLocaleString('es-CO', {
+    weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit',
+    timeZone: 'America/Bogota',
+  })
 
   return (
     <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
+
       {/* Header */}
       <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
-        <button onClick={() => navigate(-1)} className="text-gray-400 mb-4">← Volver</button>
+        <button onClick={() => navigate(-1)} className="text-gray-400 mb-4 text-sm">← Volver</button>
         <p className="text-xs text-gray-400 capitalize mb-1">{partido.fase} · Jornada {partido.jornada}</p>
-        <p className="text-xs text-gray-400">{hora}</p>
+        <p className="text-xs text-gray-400 capitalize">{hora}</p>
         {cerrado && (
           <div className="mt-2 px-3 py-1 rounded-full text-xs font-bold text-red-300 inline-block"
             style={{ backgroundColor: 'rgba(229,57,53,0.15)' }}>
@@ -94,54 +120,94 @@ export default function Pronostico() {
       </div>
 
       <div className="px-5 mt-4">
-        {/* Marcador */}
-        <div className="rounded-2xl p-6" style={{ backgroundColor: '#231E3D' }}>
-          <div className="flex items-center justify-between gap-4">
+
+        {/* Tarjeta principal: equipos + marcador */}
+        <div className="rounded-2xl p-5" style={{ backgroundColor: '#231E3D' }}>
+
+          {/* Fila: local | marcador | visitante */}
+          <div className="grid grid-cols-3 items-center gap-3">
+
             {/* Local */}
-            <div className="flex flex-col items-center flex-1">
+            <div className="flex flex-col items-center gap-2">
               <FlagEmoji emoji={partido.flag_local} size="xl" />
-              <span className="text-sm font-bold text-white mt-2 text-center">{partido.equipo_local}</span>
+              <span className="text-xs font-bold text-white text-center leading-tight">
+                {partido.equipo_local}
+              </span>
+              {!cerrado && (
+                <div className="flex items-center gap-2 mt-1">
+                  <button
+                    onClick={() => setGolesLocal(g => Math.max(0, g - 1))}
+                    className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
+                    style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
+                  <button
+                    onClick={() => setGolesLocal(g => g + 1)}
+                    className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
+                    style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
+                </div>
+              )}
             </div>
 
-            {/* Scores */}
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col items-center">
-                <button disabled={cerrado} onClick={() => setGolesLocal(g => Math.max(0, g - 1))}
-                  className="w-9 h-9 rounded-xl font-bold text-lg disabled:opacity-40"
-                  style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
-                <span className="text-3xl font-extrabold text-white my-2">{golesLocal}</span>
-                <button disabled={cerrado} onClick={() => setGolesLocal(g => g + 1)}
-                  className="w-9 h-9 rounded-xl font-bold text-lg disabled:opacity-40"
-                  style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
+            {/* Marcador central */}
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-center gap-2">
+                <span className="text-5xl font-extrabold text-white">{golesLocal}</span>
+                <span className="text-3xl font-bold" style={{ color: '#6b7280' }}>:</span>
+                <span className="text-5xl font-extrabold text-white">{golesVisitante}</span>
               </div>
-
-              <span className="text-gray-400 text-xl font-bold">:</span>
-
-              <div className="flex flex-col items-center">
-                <button disabled={cerrado} onClick={() => setGolesVisitante(g => Math.max(0, g - 1))}
-                  className="w-9 h-9 rounded-xl font-bold text-lg disabled:opacity-40"
-                  style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
-                <span className="text-3xl font-extrabold text-white my-2">{golesVisitante}</span>
-                <button disabled={cerrado} onClick={() => setGolesVisitante(g => g + 1)}
-                  className="w-9 h-9 rounded-xl font-bold text-lg disabled:opacity-40"
-                  style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
-              </div>
+              <span className="text-xs font-semibold mt-1" style={{ color: '#a78bfa' }}>
+                {resultado === 'local' ? `Gana ${partido.equipo_local}` :
+                  resultado === 'visitante' ? `Gana ${partido.equipo_visitante}` : 'Empate'}
+              </span>
             </div>
 
             {/* Visitante */}
-            <div className="flex flex-col items-center flex-1">
+            <div className="flex flex-col items-center gap-2">
               <FlagEmoji emoji={partido.flag_visitante} size="xl" />
-              <span className="text-sm font-bold text-white mt-2 text-center">{partido.equipo_visitante}</span>
+              <span className="text-xs font-bold text-white text-center leading-tight">
+                {partido.equipo_visitante}
+              </span>
+              {!cerrado && (
+                <div className="flex items-center gap-2 mt-1">
+                  <button
+                    onClick={() => setGolesVisitante(g => Math.max(0, g - 1))}
+                    className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
+                    style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
+                  <button
+                    onClick={() => setGolesVisitante(g => g + 1)}
+                    className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
+                    style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Resultado calculado */}
-          <div className="mt-4 text-center">
-            <span className="px-4 py-1 rounded-full text-sm font-bold"
-              style={{ backgroundColor: 'rgba(113,69,214,0.2)', color: '#a78bfa' }}>
-              Resultado: {calcResultado(golesLocal, golesVisitante) === 'local' ? `Gana ${partido.equipo_local}` :
-                calcResultado(golesLocal, golesVisitante) === 'visitante' ? `Gana ${partido.equipo_visitante}` : 'Empate'}
-            </span>
+          {/* Botones de resultado */}
+          <div className="flex gap-2 mt-5">
+            {[
+              { key: 'local', top: 'Gana', bottom: partido.equipo_local },
+              { key: 'empate', top: 'Empate', bottom: null },
+              { key: 'visitante', top: 'Gana', bottom: partido.equipo_visitante },
+            ].map(({ key, top, bottom }) => {
+              const activo = resultado === key
+              return (
+                <button key={key}
+                  disabled={cerrado}
+                  onClick={() => handleSetResultado(key)}
+                  className="flex-1 py-3 px-1 rounded-xl flex flex-col items-center justify-center transition-all active:scale-95 disabled:opacity-50"
+                  style={{
+                    backgroundColor: activo ? '#7145D6' : '#2e2a4a',
+                    border: activo ? '2px solid #9f72f7' : '2px solid transparent',
+                  }}>
+                  <span className="text-xs font-bold text-white">{top}</span>
+                  {bottom && (
+                    <span className="text-[10px] font-semibold mt-0.5 truncate w-full text-center"
+                      style={{ color: activo ? '#e9d5ff' : '#9ca3af' }}>
+                      {bottom}
+                    </span>
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -158,7 +224,7 @@ export default function Pronostico() {
                   <p className="text-xs text-gray-400">+5 puntos si aciertas</p>
                 </div>
                 <button disabled={cerrado} onClick={() => setQuinteroGol(v => !v)}
-                  className="w-12 h-6 rounded-full transition-all relative disabled:opacity-40"
+                  className="w-12 h-6 rounded-full transition-all relative disabled:opacity-40 flex-shrink-0"
                   style={{ backgroundColor: quinteroGol ? '#7145D6' : '#3d3560' }}>
                   <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
                     style={{ left: quinteroGol ? '26px' : '2px' }} />
@@ -171,7 +237,7 @@ export default function Pronostico() {
                   <p className="text-xs text-gray-400">+5 puntos si aciertas</p>
                 </div>
                 <button disabled={cerrado} onClick={() => setQuinteroAsistencia(v => !v)}
-                  className="w-12 h-6 rounded-full transition-all relative disabled:opacity-40"
+                  className="w-12 h-6 rounded-full transition-all relative disabled:opacity-40 flex-shrink-0"
                   style={{ backgroundColor: quinteroAsistencia ? '#7145D6' : '#3d3560' }}>
                   <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
                     style={{ left: quinteroAsistencia ? '26px' : '2px' }} />
@@ -182,7 +248,7 @@ export default function Pronostico() {
         )}
 
         {/* Puntos posibles */}
-        <div className="rounded-2xl p-4 mt-4" style={{ backgroundColor: 'rgba(113,69,214,0.1)', border: '1px solid rgba(113,69,214,0.3)' }}>
+        <div className="rounded-2xl p-4 mt-4" style={{ backgroundColor: 'rgba(113,69,214,0.08)', border: '1px solid rgba(113,69,214,0.25)' }}>
           <p className="text-xs text-gray-400 mb-2">Puntos posibles en este partido</p>
           <div className="flex gap-4 flex-wrap">
             <div className="text-center">
@@ -210,7 +276,7 @@ export default function Pronostico() {
 
         {!cerrado && (
           <button onClick={handleSave} disabled={saving || saved}
-            className="w-full py-4 rounded-2xl font-bold text-white text-lg mt-5 disabled:opacity-60"
+            className="w-full py-4 rounded-2xl font-bold text-white text-lg mt-5 disabled:opacity-60 active:scale-95 transition-transform"
             style={{ backgroundColor: saved ? '#1D9E75' : '#7145D6' }}>
             {saved ? '✓ Pronóstico guardado' : saving ? 'Guardando...' : pronostico ? 'Actualizar pronóstico' : 'Guardar pronóstico'}
           </button>
