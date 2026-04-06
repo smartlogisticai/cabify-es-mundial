@@ -78,30 +78,30 @@ export default function Home() {
   ).length
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="text-white text-lg">Cargando...</div>
     </div>
   )
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
 
       {/* Header */}
-      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 100%)' }}>
+      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 100%)' }}>
         <p className="text-gray-400 text-sm">Hola, {profile?.alias || profile?.nombre} 👋</p>
         <h1 className="text-2xl font-extrabold text-white mt-1">Cabify es Mundial</h1>
 
         {/* Stats row */}
         <div className="flex gap-3 mt-4">
-          <div className="flex-1 rounded-2xl p-3 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="flex-1 rounded-2xl p-3 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-xs text-gray-400 mb-1">Tu posición</p>
             <p className="text-2xl font-extrabold text-white">#{clasificacion?.posicion || '—'}</p>
           </div>
-          <div className="flex-1 rounded-2xl p-3 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="flex-1 rounded-2xl p-3 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-xs text-gray-400 mb-1">Tus puntos</p>
             <p className="text-2xl font-extrabold" style={{ color: '#7145D6' }}>{clasificacion?.puntos ?? 0}</p>
           </div>
-          <div className="flex-1 rounded-2xl p-3 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="flex-1 rounded-2xl p-3 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-xs text-gray-400 mb-1">Pozo total</p>
             <p className="text-lg font-extrabold text-green-400">${(pozo / 1000).toFixed(0)}K</p>
           </div>
@@ -122,7 +122,7 @@ export default function Home() {
       {/* Tarjeta Módulo The GOAT */}
       <div className="px-5 mt-4">
         <div className="rounded-2xl p-4 flex items-center justify-between cursor-pointer active:scale-95 transition-transform"
-          style={{ backgroundColor: '#231E3D', border: '1px solid rgba(113,69,214,0.4)' }}
+          style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid rgba(113,69,214,0.4)' }}
           onClick={() => navigate('/modulo-final')}>
           <div>
             <p className="font-bold text-white">🐐 Módulo The GOAT</p>
@@ -138,7 +138,7 @@ export default function Home() {
           <button key={j} onClick={() => setJornada(j)}
             className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
             style={{
-              backgroundColor: jornada === j ? '#7145D6' : '#231E3D',
+              backgroundColor: jornada === j ? '#7145D6' : 'var(--bg-secondary)',
               color: jornada === j ? '#fff' : '#9ca3af',
             }}>
             {j === 'todas' ? 'Todos' : `Jornada ${j}`}
@@ -149,7 +149,7 @@ export default function Home() {
       {/* Lista de partidos agrupados por fecha */}
       <div className="px-5 mt-4 flex flex-col gap-6">
         {gruposPorFecha.length === 0 ? (
-          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-4xl mb-2">📭</p>
             <p className="text-gray-400">No hay partidos en esta jornada</p>
           </div>
@@ -180,7 +180,7 @@ export default function Home() {
                       minute: '2-digit',
                     })
 
-                    let borderColor = '#3d3560'
+                    let borderColor = 'var(--border)'
                     if (tienePron && !terminado) borderColor = '#1D9E75'
                     if (p.es_colombia) borderColor = '#7145D6'
 
@@ -188,7 +188,7 @@ export default function Home() {
                       <div key={p.id}
                         onClick={() => !cerrado && !terminado && navigate(`/pronostico/${p.id}`)}
                         className={`rounded-2xl p-4 ${!cerrado && !terminado ? 'cursor-pointer active:scale-95 transition-transform' : 'opacity-70'}`}
-                        style={{ backgroundColor: '#231E3D', border: `1px solid ${borderColor}` }}>
+                        style={{ backgroundColor: 'var(--bg-secondary)', border: `1px solid ${borderColor}` }}>
 
                         {/* Fila superior: fase/jornada + estado */}
                         <div className="flex justify-between items-center mb-2">
@@ -227,7 +227,7 @@ export default function Home() {
                         <div className="flex gap-2 mt-2 flex-wrap">
                           {p.es_colombia && (
                             <span className="px-2 py-0.5 rounded-lg text-xs font-bold"
-                              style={{ backgroundColor: 'rgba(113,69,214,0.2)', color: '#a78bfa' }}>
+                              style={{ backgroundColor: 'rgba(113,69,214,0.2)', color: 'var(--text-accent)' }}>
                               🇨🇴 Módulo Quintero
                             </span>
                           )}

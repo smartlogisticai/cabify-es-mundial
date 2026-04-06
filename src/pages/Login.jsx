@@ -27,7 +27,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ backgroundColor: '#1A1730' }}>
+      style={{ backgroundColor: 'var(--bg-primary)' }}>
 
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
@@ -46,7 +46,7 @@ export default function Login() {
               required
               placeholder="tu@cabify.com"
               className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
-              style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}
+              style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}
             />
           </div>
 
@@ -59,7 +59,7 @@ export default function Login() {
               required
               placeholder="••••••••"
               className="w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
-              style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}
+              style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}
             />
           </div>
 

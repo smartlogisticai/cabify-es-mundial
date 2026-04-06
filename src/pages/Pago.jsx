@@ -12,7 +12,7 @@ export default function Pago() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10"
-      style={{ backgroundColor: '#1A1730' }}>
+      style={{ backgroundColor: 'var(--bg-primary)' }}>
 
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
@@ -22,7 +22,7 @@ export default function Pago() {
         </div>
 
         {/* Estado cuenta */}
-        <div className="rounded-2xl p-4 mb-6" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
+        <div className="rounded-2xl p-4 mb-6" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm text-gray-400">Cuenta</p>
@@ -37,7 +37,7 @@ export default function Pago() {
         </div>
 
         {/* Instrucciones de pago */}
-        <div className="rounded-2xl p-5 mb-6" style={{ backgroundColor: '#231E3D', border: '1px solid #7145D6' }}>
+        <div className="rounded-2xl p-5 mb-6" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid #7145D6' }}>
           <h2 className="font-bold text-white mb-3">📱 Instrucciones de pago</h2>
           <div className="flex flex-col gap-2 text-sm text-gray-300">
             <p>1. Realiza una transferencia de <span className="font-bold text-white">$30.000 COP</span></p>
@@ -62,7 +62,7 @@ export default function Pago() {
 
         <button onClick={handleSignOut}
           className="w-full py-3 rounded-xl font-semibold text-gray-400 border"
-          style={{ borderColor: '#3d3560', backgroundColor: 'transparent' }}>
+          style={{ borderColor: 'var(--border)', backgroundColor: 'transparent' }}>
           Cerrar sesión
         </button>
       </div>

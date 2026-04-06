@@ -43,8 +43,8 @@ export default function AdminTabla() {
   }
 
   return (
-    <div className="min-h-screen pb-10" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-10" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <p className="text-xs text-purple-400 font-bold mb-1">PANEL ADMIN</p>
         <h1 className="text-2xl font-extrabold text-white">📊 Clasificación</h1>
       </div>
@@ -54,7 +54,7 @@ export default function AdminTabla() {
         {FASES.map(f => (
           <button key={f.key} onClick={() => setFase(f.key)}
             className="flex-1 py-2 rounded-xl text-xs font-bold"
-            style={{ backgroundColor: fase === f.key ? '#7145D6' : '#231E3D', color: fase === f.key ? '#fff' : '#9ca3af' }}>
+            style={{ backgroundColor: fase === f.key ? '#7145D6' : 'var(--bg-secondary)', color: fase === f.key ? '#fff' : '#9ca3af' }}>
             {f.label}
           </button>
         ))}
@@ -77,7 +77,7 @@ export default function AdminTabla() {
                 const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : null
                 return (
                   <div key={row.id} className="rounded-2xl px-4 py-3 flex items-center gap-3"
-                    style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
+                    style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
                     <span className="w-8 text-center font-bold text-sm text-gray-400">
                       {medal || `#${idx + 1}`}
                     </span>

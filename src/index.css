@@ -11,6 +11,43 @@
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
+/* ── Theme tokens ─────────────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-primary:   #1A1730;
+  --bg-secondary: #231E3D;
+  --bg-tertiary:  #2d1f5e;
+  --bg-card:      #2d2752;
+  --bg-inactive:  #2e2a4a;
+  --border:       #3d3560;
+  --text-primary: #ffffff;
+  --text-muted:   #9ca3af;
+  --text-subtle:  #6b7280;
+  --text-accent:  #a78bfa;
+}
+
+[data-theme="light"] {
+  --bg-primary:   #f5f3ff;
+  --bg-secondary: #ffffff;
+  --bg-tertiary:  #ede9ff;
+  --bg-card:      #ede9ff;
+  --bg-inactive:  #e8e3f7;
+  --border:       #d4cef5;
+  --text-primary: #1a1730;
+  --text-muted:   #6b7280;
+  --text-subtle:  #9ca3af;
+  --text-accent:  #7145D6;
+}
+
+/* ── Light mode: Tailwind text-color overrides ────────────────────────────── */
+[data-theme="light"] .text-white        { color: var(--text-primary) !important; }
+[data-theme="light"] .text-gray-300     { color: #4b5563 !important; }
+[data-theme="light"] .text-gray-400     { color: #6b7280 !important; }
+[data-theme="light"] .text-gray-500     { color: #9ca3af !important; }
+[data-theme="light"] .text-gray-600     { color: #9ca3af !important; }
+[data-theme="light"] .text-purple-300   { color: #7145D6 !important; }
+[data-theme="light"] .text-purple-400   { color: #7145D6 !important; }
+
 * {
   font-family: 'Plus Jakarta Sans', sans-serif;
   box-sizing: border-box;
@@ -19,8 +56,8 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #1A1730;
-  color: #ffffff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
 }
 

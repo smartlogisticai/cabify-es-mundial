@@ -31,23 +31,23 @@ export default function AdminPagos() {
   const pozo = activos.length * 30000
 
   return (
-    <div className="min-h-screen pb-10" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-10" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <p className="text-xs text-purple-400 font-bold mb-1">PANEL ADMIN</p>
         <h1 className="text-2xl font-extrabold text-white">💰 Pagos y usuarios</h1>
       </div>
 
       {/* Stats */}
       <div className="flex gap-3 px-5 mt-4">
-        <div className="flex-1 rounded-2xl p-4 text-center" style={{ backgroundColor: '#231E3D' }}>
+        <div className="flex-1 rounded-2xl p-4 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
           <p className="text-xs text-gray-400 mb-1">Activos</p>
           <p className="text-2xl font-extrabold text-green-400">{activos.length}</p>
         </div>
-        <div className="flex-1 rounded-2xl p-4 text-center" style={{ backgroundColor: '#231E3D' }}>
+        <div className="flex-1 rounded-2xl p-4 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
           <p className="text-xs text-gray-400 mb-1">Pendientes</p>
           <p className="text-2xl font-extrabold text-yellow-400">{pendientes.length}</p>
         </div>
-        <div className="flex-1 rounded-2xl p-4 text-center" style={{ backgroundColor: '#231E3D' }}>
+        <div className="flex-1 rounded-2xl p-4 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
           <p className="text-xs text-gray-400 mb-1">Recaudado</p>
           <p className="text-lg font-extrabold text-white">${(pozo / 1000).toFixed(0)}K</p>
         </div>
@@ -59,13 +59,13 @@ export default function AdminPagos() {
         {loading ? (
           <div className="text-gray-400 text-center py-4">Cargando...</div>
         ) : pendientes.length === 0 ? (
-          <div className="rounded-2xl p-4 text-center mb-5" style={{ backgroundColor: '#231E3D' }}>
+          <div className="rounded-2xl p-4 text-center mb-5" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-gray-400 text-sm">No hay pagos pendientes</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3 mb-6">
             {pendientes.map(u => (
-              <div key={u.id} className="rounded-2xl p-4" style={{ backgroundColor: '#231E3D', border: '1px solid #fbbf2450' }}>
+              <div key={u.id} className="rounded-2xl p-4" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid #fbbf2450' }}>
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <p className="font-bold text-white">{u.nombre}</p>
@@ -97,7 +97,7 @@ export default function AdminPagos() {
         <div className="flex flex-col gap-2">
           {activos.map(u => (
             <div key={u.id} className="rounded-2xl px-4 py-3 flex items-center justify-between"
-              style={{ backgroundColor: '#231E3D', border: '1px solid #1D9E7530' }}>
+              style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid #1D9E7530' }}>
               <div>
                 <p className="font-semibold text-white text-sm">{u.nombre}</p>
                 <p className="text-xs text-gray-400">{u.alias}</p>

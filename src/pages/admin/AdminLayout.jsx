@@ -18,21 +18,21 @@ export default function AdminLayout() {
   }
 
   return (
-    <div style={{ backgroundColor: '#1A1730', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       {/* Top nav */}
       <div className="flex items-center justify-between px-5 pt-5 pb-3"
-        style={{ backgroundColor: '#231E3D', borderBottom: '1px solid #3d3560' }}>
+        style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
         <div className="flex items-center gap-3">
           <span className="font-extrabold text-white text-sm">⚙️ Panel Admin</span>
           <Link to="/home" className="text-xs px-2 py-1 rounded-lg"
-            style={{ backgroundColor: 'rgba(113,69,214,0.2)', color: '#a78bfa' }}>
+            style={{ backgroundColor: 'rgba(113,69,214,0.2)', color: 'var(--text-accent)' }}>
             ← App
           </Link>
         </div>
         <button onClick={handleSignOut} className="text-xs text-gray-400">Cerrar sesión</button>
       </div>
 
-      <div className="flex gap-1 px-4 py-2" style={{ backgroundColor: '#231E3D' }}>
+      <div className="flex gap-1 px-4 py-2" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         {adminNav.map(n => (
           <Link key={n.to} to={n.to}
             className="flex-1 py-2 rounded-xl text-xs font-bold text-center transition-all"

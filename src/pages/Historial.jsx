@@ -34,8 +34,8 @@ export default function Historial() {
     : pronosticos.filter(p => p.partidos?.fase === filtroFase)
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <h1 className="text-2xl font-extrabold text-white">📋 Historial</h1>
         <p className="text-gray-400 text-sm mt-1">Todos tus pronósticos</p>
       </div>
@@ -46,7 +46,7 @@ export default function Historial() {
           <button key={f} onClick={() => setFiltroFase(f)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold capitalize transition-all"
             style={{
-              backgroundColor: filtroFase === f ? '#7145D6' : '#231E3D',
+              backgroundColor: filtroFase === f ? '#7145D6' : 'var(--bg-secondary)',
               color: filtroFase === f ? '#fff' : '#9ca3af'
             }}>
             {f === 'todos' ? 'Todos' : f}
@@ -58,7 +58,7 @@ export default function Historial() {
         {loading ? (
           <div className="text-center text-gray-400 py-10">Cargando...</div>
         ) : filtrados.length === 0 ? (
-          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-4xl mb-2">📭</p>
             <p className="text-gray-400">No hay pronósticos en esta fase</p>
           </div>
@@ -76,8 +76,8 @@ export default function Historial() {
               return (
                 <div key={pr.id} className="rounded-2xl p-4"
                   style={{
-                    backgroundColor: '#231E3D',
-                    border: `1px solid ${editable ? '#1D9E75' : '#3d3560'}`,
+                    backgroundColor: 'var(--bg-secondary)',
+                    border: `1px solid ${editable ? '#1D9E75' : 'var(--border)'}`,
                   }}>
 
                   {/* Fila superior: fase/fecha + estado edición + puntos */}

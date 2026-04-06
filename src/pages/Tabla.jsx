@@ -30,8 +30,8 @@ export default function Tabla() {
   }, [fase])
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <h1 className="text-2xl font-extrabold text-white">🏅 Clasificación</h1>
       </div>
 
@@ -41,7 +41,7 @@ export default function Tabla() {
           <button key={f.key} onClick={() => setFase(f.key)}
             className="flex-1 py-2 rounded-xl text-xs font-bold transition-all"
             style={{
-              backgroundColor: fase === f.key ? '#7145D6' : '#231E3D',
+              backgroundColor: fase === f.key ? '#7145D6' : 'var(--bg-secondary)',
               color: fase === f.key ? '#fff' : '#9ca3af'
             }}>
             {f.label}
@@ -53,7 +53,7 @@ export default function Tabla() {
         {loading ? (
           <div className="text-center text-gray-400 py-10">Cargando...</div>
         ) : tabla.length === 0 ? (
-          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-4xl mb-2">📭</p>
             <p className="text-gray-400">Aún no hay puntos en esta fase</p>
           </div>
@@ -67,8 +67,8 @@ export default function Tabla() {
                 <div key={row.id}
                   className="rounded-2xl px-4 py-3 flex items-center gap-3"
                   style={{
-                    backgroundColor: isMe ? 'rgba(113,69,214,0.25)' : '#231E3D',
-                    border: isMe ? '2px solid #7145D6' : '1px solid #3d3560'
+                    backgroundColor: isMe ? 'rgba(113,69,214,0.25)' : 'var(--bg-secondary)',
+                    border: isMe ? '2px solid #7145D6' : '1px solid var(--border)'
                   }}>
                   <span className="w-8 text-center font-bold text-gray-400 text-sm">
                     {medal || `#${idx + 1}`}
@@ -76,10 +76,10 @@ export default function Tabla() {
                   <div className="flex-1">
                     <p className="font-bold text-white text-sm">
                       {row.users?.alias || row.users?.nombre}
-                      {isMe && <span className="ml-2 text-xs" style={{ color: '#a78bfa' }}>(tú)</span>}
+                      {isMe && <span className="ml-2 text-xs" style={{ color: 'var(--text-accent)' }}>(tú)</span>}
                     </p>
                   </div>
-                  <span className="font-extrabold text-lg" style={{ color: isMe ? '#a78bfa' : '#fff' }}>
+                  <span className="font-extrabold text-lg" style={{ color: isMe ? 'var(--text-accent)' : '#fff' }}>
                     {row.puntos}
                     <span className="text-xs text-gray-400 font-normal ml-1">pts</span>
                   </span>

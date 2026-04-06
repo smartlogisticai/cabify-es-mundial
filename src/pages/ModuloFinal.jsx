@@ -43,11 +43,11 @@ export default function ModuloFinal() {
   }
 
   const inputClass = "w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
-  const inputStyle = { backgroundColor: '#2d2752', border: '1px solid #3d3560' }
+  const inputStyle = { backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)' }
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-6" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-6" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <h1 className="text-2xl font-extrabold text-white">🐐 Módulo The GOAT</h1>
         <p className="text-gray-400 text-sm mt-1">Disponible durante la jornada 1 de grupos</p>
       </div>
@@ -79,7 +79,7 @@ export default function ModuloFinal() {
           </div>
         )}
 
-        <div className="rounded-2xl p-5" style={{ backgroundColor: '#231E3D' }}>
+        <div className="rounded-2xl p-5" style={{ backgroundColor: 'var(--bg-secondary)' }}>
           <div className="mb-5">
             <label className="block text-sm font-semibold text-gray-300 mb-2">
               ⚽ Goleador del torneo

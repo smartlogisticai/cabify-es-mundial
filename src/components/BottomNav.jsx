@@ -24,7 +24,7 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50"
-      style={{ backgroundColor: '#231E3D', borderTop: '1px solid #3d3560' }}>
+      style={{ backgroundColor: 'var(--bg-secondary)', borderTop: '1px solid var(--border)' }}>
 
       {isAdmin && (
         <div className="flex items-center justify-center gap-1 px-3 pt-1">

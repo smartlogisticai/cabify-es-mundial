@@ -25,7 +25,7 @@ export default function FlagEmoji({ emoji, size = 'md', team = '', className = '
           width: fontSize,
           height: fontSize,
           fontSize: `calc(${fontSize} * 0.42)`,
-          backgroundColor: '#3d3560',
+          backgroundColor: 'var(--border)',
           letterSpacing: '-0.5px',
         }}
       >

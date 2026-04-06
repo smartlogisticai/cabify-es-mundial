@@ -30,11 +30,11 @@ export default function Registro() {
   }
 
   const inputClass = "w-full px-4 py-3 rounded-xl text-white placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
-  const inputStyle = { backgroundColor: '#231E3D', border: '1px solid #3d3560' }
+  const inputStyle = { backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10"
-      style={{ backgroundColor: '#1A1730' }}>
+      style={{ backgroundColor: 'var(--bg-primary)' }}>
 
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">

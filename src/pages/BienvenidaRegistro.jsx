@@ -49,7 +49,7 @@ export default function BienvenidaRegistro() {
         <button
           onClick={() => navigate('/login')}
           className="text-sm font-semibold"
-          style={{ color: '#a78bfa' }}>
+          style={{ color: 'var(--text-accent)' }}>
           ¿Ya tienes cuenta? Entrar
         </button>
 

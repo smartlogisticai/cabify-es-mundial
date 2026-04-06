@@ -43,15 +43,15 @@ export default function Resultados() {
   }
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <h1 className="text-2xl font-extrabold text-white">⚽ Resultados</h1>
         <input
           type="date"
           value={fecha}
           onChange={e => setFecha(e.target.value)}
           className="mt-3 px-3 py-2 rounded-xl text-white text-sm outline-none"
-          style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}
+          style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}
         />
       </div>
 
@@ -59,7 +59,7 @@ export default function Resultados() {
         {loading ? (
           <div className="text-center text-gray-400 py-10">Cargando...</div>
         ) : partidos.length === 0 ? (
-          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-4xl mb-2">📭</p>
             <p className="text-gray-400">No hay partidos este día</p>
           </div>
@@ -70,7 +70,7 @@ export default function Resultados() {
               const hora = new Date(p.fecha_hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
 
               return (
-                <div key={p.id} className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
+                <div key={p.id} className="rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
                   {/* Cabecera partido */}
                   <button className="w-full px-4 py-4 text-left" onClick={() => toggleAccordion(p.id)}>
                     <div className="flex justify-between items-center mb-2">
@@ -109,7 +109,7 @@ export default function Resultados() {
 
                   {/* Accordion pronósticos */}
                   {abiertos[p.id] && (
-                    <div className="border-t px-4 py-3" style={{ borderColor: '#3d3560' }}>
+                    <div className="border-t px-4 py-3" style={{ borderColor: 'var(--border)' }}>
                       {!terminado ? (
                         <p className="text-xs text-gray-500 text-center">Los pronósticos se revelan al cerrar el partido</p>
                       ) : (pronosticos[p.id] || []).length === 0 ? (

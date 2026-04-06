@@ -13,7 +13,7 @@ export default function PagoConfirmado() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10"
-      style={{ backgroundColor: '#1A1730' }}>
+      style={{ backgroundColor: 'var(--bg-primary)' }}>
 
       <div className="w-full max-w-sm flex flex-col items-center text-center gap-6">
 
@@ -53,14 +53,14 @@ export default function PagoConfirmado() {
         <button
           onClick={() => navigate('/pago')}
           className="text-sm font-semibold"
-          style={{ color: '#a78bfa' }}>
+          style={{ color: 'var(--text-accent)' }}>
           ¿Aún no has pagado? Ver instrucciones →
         </button>
 
         {/* Cerrar sesión */}
         <button onClick={handleSignOut}
           className="w-full py-3 rounded-xl font-semibold text-gray-400 border"
-          style={{ borderColor: '#3d3560', backgroundColor: 'transparent' }}>
+          style={{ borderColor: 'var(--border)', backgroundColor: 'transparent' }}>
           Cerrar sesión
         </button>
 

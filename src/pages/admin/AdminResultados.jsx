@@ -62,8 +62,8 @@ export default function AdminResultados() {
   }
 
   return (
-    <div className="min-h-screen pb-10" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-10" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <p className="text-xs text-purple-400 font-bold mb-1">PANEL ADMIN</p>
         <h1 className="text-2xl font-extrabold text-white">⚽ Resultados</h1>
         <p className="text-gray-400 text-sm mt-1">Partidos de hoy · ingreso manual de respaldo</p>
@@ -78,7 +78,7 @@ export default function AdminResultados() {
 
       <div className="px-5 mt-4 flex flex-col gap-4">
         {partidos.length === 0 && (
-          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#231E3D' }}>
+          <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <p className="text-gray-400">No hay partidos hoy</p>
           </div>
         )}
@@ -88,7 +88,7 @@ export default function AdminResultados() {
           const hora = new Date(p.fecha_hora).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
 
           return (
-            <div key={p.id} className="rounded-2xl p-4" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
+            <div key={p.id} className="rounded-2xl p-4" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
               <div className="flex justify-between items-center mb-3">
                 <span className="text-xs text-gray-400 capitalize">{p.fase} · {hora}</span>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${p.estado === 'terminado' ? 'bg-gray-500/20 text-gray-300' : p.estado === 'en_vivo' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'}`}>
@@ -116,7 +116,7 @@ export default function AdminResultados() {
                   <div className="flex items-center gap-4 justify-center mb-4">
                     <div className="flex items-center gap-2">
                       <button onClick={() => setEditando(prev => ({...prev, [p.id]: {...ed, goles_local: Math.max(0, ed.goles_local - 1)}}))}
-                        className="w-8 h-8 rounded-lg font-bold" style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
+                        className="w-8 h-8 rounded-lg font-bold" style={{ backgroundColor: 'var(--border)', color: '#fff' }}>−</button>
                       <span className="text-2xl font-extrabold text-white w-8 text-center">{ed.goles_local}</span>
                       <button onClick={() => setEditando(prev => ({...prev, [p.id]: {...ed, goles_local: ed.goles_local + 1}}))}
                         className="w-8 h-8 rounded-lg font-bold" style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
@@ -124,7 +124,7 @@ export default function AdminResultados() {
                     <span className="text-gray-400 font-bold text-xl">:</span>
                     <div className="flex items-center gap-2">
                       <button onClick={() => setEditando(prev => ({...prev, [p.id]: {...ed, goles_visitante: Math.max(0, ed.goles_visitante - 1)}}))}
-                        className="w-8 h-8 rounded-lg font-bold" style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
+                        className="w-8 h-8 rounded-lg font-bold" style={{ backgroundColor: 'var(--border)', color: '#fff' }}>−</button>
                       <span className="text-2xl font-extrabold text-white w-8 text-center">{ed.goles_visitante}</span>
                       <button onClick={() => setEditando(prev => ({...prev, [p.id]: {...ed, goles_visitante: ed.goles_visitante + 1}}))}
                         className="w-8 h-8 rounded-lg font-bold" style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
@@ -138,7 +138,7 @@ export default function AdminResultados() {
                           <span className="text-sm text-white">{label}</span>
                           <button onClick={() => setEditando(prev => ({...prev, [p.id]: {...ed, [key]: !ed[key]}}))}
                             className="w-12 h-6 rounded-full relative"
-                            style={{ backgroundColor: ed[key] ? '#7145D6' : '#3d3560' }}>
+                            style={{ backgroundColor: ed[key] ? '#7145D6' : 'var(--border)' }}>
                             <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow"
                               style={{ left: ed[key] ? '26px' : '2px' }} />
                           </button>
@@ -157,7 +157,7 @@ export default function AdminResultados() {
                 <div className="flex gap-2">
                   <button onClick={() => startEdit(p)}
                     className="flex-1 py-2 rounded-xl text-sm font-bold"
-                    style={{ backgroundColor: '#3d3560', color: '#fff' }}>
+                    style={{ backgroundColor: 'var(--border)', color: '#fff' }}>
                     ✏️ Ingresar resultado
                   </button>
                   {p.estado === 'terminado' && (

@@ -5,7 +5,7 @@ export default function Splash() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 text-white"
-      style={{ background: 'linear-gradient(160deg, #1A1730 0%, #2d1f5e 100%)' }}>
+      style={{ background: 'linear-gradient(160deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%)' }}>
 
       {/* Logo / Trophy */}
       <div className="text-8xl mb-4">🏆</div>

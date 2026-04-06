@@ -96,12 +96,12 @@ export default function Pronostico() {
   }
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="text-white">Cargando...</div>
     </div>
   )
   if (!partido) return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="text-white">Partido no encontrado</div>
     </div>
   )
@@ -112,10 +112,10 @@ export default function Pronostico() {
   })
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
 
       {/* Header */}
-      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+      <div className="px-5 pt-10 pb-5" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <button onClick={() => navigate(-1)} className="text-gray-400 mb-4 text-sm">← Volver</button>
         <p className="text-xs text-gray-400 capitalize mb-1">{partido.fase} · Jornada {partido.jornada}</p>
         <p className="text-xs text-gray-400 capitalize">{hora}</p>
@@ -130,7 +130,7 @@ export default function Pronostico() {
       <div className="px-5 mt-4">
 
         {/* Tarjeta principal: equipos + marcador */}
-        <div className="rounded-2xl p-5" style={{ backgroundColor: '#231E3D' }}>
+        <div className="rounded-2xl p-5" style={{ backgroundColor: 'var(--bg-secondary)' }}>
 
           {/* Fila: local | marcador | visitante */}
           <div className="grid grid-cols-3 items-center gap-3">
@@ -146,7 +146,7 @@ export default function Pronostico() {
                   <button data-sound="tick"
                     onClick={() => setGolesLocal(g => Math.max(0, g - 1))}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
-                    style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
+                    style={{ backgroundColor: 'var(--border)', color: '#fff' }}>−</button>
                   <button data-sound="tick"
                     onClick={() => setGolesLocal(g => g + 1)}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
@@ -162,7 +162,7 @@ export default function Pronostico() {
                 <span className="text-3xl font-bold" style={{ color: '#6b7280' }}>:</span>
                 <span className="text-5xl font-extrabold text-white">{golesVisitante}</span>
               </div>
-              <span className="text-xs font-semibold mt-1" style={{ color: '#a78bfa' }}>
+              <span className="text-xs font-semibold mt-1" style={{ color: 'var(--text-accent)' }}>
                 {resultado === 'local' ? `Gana ${partido.equipo_local}` :
                   resultado === 'visitante' ? `Gana ${partido.equipo_visitante}` : 'Empate'}
               </span>
@@ -179,7 +179,7 @@ export default function Pronostico() {
                   <button data-sound="tick"
                     onClick={() => setGolesVisitante(g => Math.max(0, g - 1))}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
-                    style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
+                    style={{ backgroundColor: 'var(--border)', color: '#fff' }}>−</button>
                   <button data-sound="tick"
                     onClick={() => setGolesVisitante(g => g + 1)}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
@@ -203,7 +203,7 @@ export default function Pronostico() {
                   onClick={() => handleSetResultado(key)}
                   className="flex-1 py-3 px-1 rounded-xl flex flex-col items-center justify-center transition-all active:scale-95 disabled:opacity-50"
                   style={{
-                    backgroundColor: activo ? '#7145D6' : '#2e2a4a',
+                    backgroundColor: activo ? '#7145D6' : 'var(--bg-inactive)',
                     border: activo ? '2px solid #9f72f7' : '2px solid transparent',
                   }}>
                   <span className="text-xs font-bold text-white">{top}</span>
@@ -221,7 +221,7 @@ export default function Pronostico() {
 
         {/* Módulo Quintero */}
         {partido.es_colombia && (
-          <div className="rounded-2xl p-5 mt-4" style={{ backgroundColor: '#231E3D', border: '2px solid #7145D6' }}>
+          <div className="rounded-2xl p-5 mt-4" style={{ backgroundColor: 'var(--bg-secondary)', border: '2px solid #7145D6' }}>
             <h3 className="font-bold text-white mb-1">🇨🇴 Módulo Quintero</h3>
             <p className="text-xs text-gray-400 mb-3">¿Qué hará Juan Fernando Quintero en este partido?</p>
 
@@ -246,7 +246,7 @@ export default function Pronostico() {
                         onClick={() => setQuinteroGol(val)}
                         className="flex-1 py-3 rounded-xl font-bold text-sm active:scale-95 transition-transform disabled:opacity-50"
                         style={{
-                          backgroundColor: activo ? '#7145D6' : '#2e2a4a',
+                          backgroundColor: activo ? '#7145D6' : 'var(--bg-inactive)',
                           border: activo ? '2px solid #9f72f7' : '2px solid transparent',
                           color: '#fff',
                         }}>
@@ -268,7 +268,7 @@ export default function Pronostico() {
                         onClick={() => setQuinteroAsistencia(val)}
                         className="flex-1 py-3 rounded-xl font-bold text-sm active:scale-95 transition-transform disabled:opacity-50"
                         style={{
-                          backgroundColor: activo ? '#7145D6' : '#2e2a4a',
+                          backgroundColor: activo ? '#7145D6' : 'var(--bg-inactive)',
                           border: activo ? '2px solid #9f72f7' : '2px solid transparent',
                           color: '#fff',
                         }}>
@@ -287,7 +287,7 @@ export default function Pronostico() {
           {/* Total destacado */}
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-gray-400">Si aciertas todo</p>
-            <p className="text-2xl font-extrabold" style={{ color: '#a78bfa' }}>
+            <p className="text-2xl font-extrabold" style={{ color: 'var(--text-accent)' }}>
               {ptsTotalPosible} <span className="text-sm font-semibold">pts</span>
             </p>
           </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { useTheme } from '../context/ThemeContext'
 import BottomNav from '../components/BottomNav'
 import { useSound } from '../hooks/useSound'
 
@@ -9,7 +10,7 @@ export default function Perfil() {
   const { profile, signOut } = useAuth()
   const navigate = useNavigate()
   const [stats, setStats] = useState([])
-  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') !== 'false')
+  const { isDark, toggleTheme } = useTheme()
   const { muted, toggleMute } = useSound()
 
   useEffect(() => {
@@ -22,12 +23,6 @@ export default function Perfil() {
     }
     if (profile) load()
   }, [profile])
-
-  function toggleDark() {
-    const next = !darkMode
-    setDarkMode(next)
-    localStorage.setItem('darkMode', String(next))
-  }
 
   async function handleSignOut() {
     await signOut()
@@ -42,8 +37,8 @@ export default function Perfil() {
   ]
 
   return (
-    <div className="min-h-screen pb-24" style={{ backgroundColor: '#1A1730' }}>
-      <div className="px-5 pt-10 pb-6" style={{ background: 'linear-gradient(160deg, #2d1f5e 0%, #1A1730 80%)' }}>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="px-5 pt-10 pb-6" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-extrabold text-white"
             style={{ backgroundColor: '#7145D6' }}>
@@ -59,16 +54,16 @@ export default function Perfil() {
 
       <div className="px-5 mt-4">
         {/* Estadísticas por fase */}
-        <div className="rounded-2xl p-4 mb-4" style={{ backgroundColor: '#231E3D' }}>
+        <div className="rounded-2xl p-4 mb-4" style={{ backgroundColor: 'var(--bg-secondary)' }}>
           <h2 className="font-bold text-white mb-3">Estadísticas por fase</h2>
           <div className="grid grid-cols-2 gap-3">
             {faseStats.map(f => {
               const s = stats.find(st => st.fase === f.key)
               return (
                 <div key={f.key} className="rounded-xl p-3 text-center"
-                  style={{ backgroundColor: '#2d2752' }}>
+                  style={{ backgroundColor: 'var(--bg-card)' }}>
                   <p className="text-xs text-gray-400 mb-1">{f.label}</p>
-                  <p className="text-xl font-extrabold" style={{ color: f.key === 'total' ? '#7145D6' : '#fff' }}>
+                  <p className="text-xl font-extrabold" style={{ color: f.key === 'total' ? '#7145D6' : 'var(--text-primary)' }}>
                     {s?.puntos ?? 0}
                   </p>
                   <p className="text-xs text-gray-500">pts</p>
@@ -82,17 +77,17 @@ export default function Perfil() {
         </div>
 
         {/* Configuración */}
-        <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
-          <div className="flex items-center justify-between px-4 py-4 border-b" style={{ borderColor: '#3d3560' }}>
+        <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+          <div className="flex items-center justify-between px-4 py-4 border-b" style={{ borderColor: 'var(--border)' }}>
             <div>
               <p className="font-semibold text-white">Modo oscuro</p>
               <p className="text-xs text-gray-400">Apariencia de la app</p>
             </div>
-            <button data-nosound onClick={toggleDark}
+            <button data-nosound onClick={toggleTheme}
               className="w-12 h-6 rounded-full transition-all relative"
-              style={{ backgroundColor: darkMode ? '#7145D6' : '#3d3560' }}>
+              style={{ backgroundColor: isDark ? '#7145D6' : 'var(--border)' }}>
               <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
-                style={{ left: darkMode ? '26px' : '2px' }} />
+                style={{ left: isDark ? '26px' : '2px' }} />
             </button>
           </div>
           <div className="flex items-center justify-between px-4 py-4">
@@ -102,7 +97,7 @@ export default function Perfil() {
             </div>
             <button data-nosound onClick={toggleMute}
               className="w-12 h-6 rounded-full transition-all relative"
-              style={{ backgroundColor: muted ? '#3d3560' : '#7145D6' }}>
+              style={{ backgroundColor: muted ? 'var(--border)' : '#7145D6' }}>
               <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
                 style={{ left: muted ? '2px' : '26px' }} />
             </button>
@@ -110,8 +105,8 @@ export default function Perfil() {
         </div>
 
         {/* Cuenta */}
-        <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
-          <div className="px-4 py-3 border-b" style={{ borderColor: '#3d3560' }}>
+        <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+          <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
             <p className="text-xs text-gray-400">Estado de cuenta</p>
             <p className="font-bold mt-0.5" style={{ color: profile?.estado === 'activo' ? '#1D9E75' : '#fbbf24' }}>
               {profile?.estado === 'activo' ? '✓ Activo' : '⏳ Pendiente'}

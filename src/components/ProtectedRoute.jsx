@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext'
 
 export function RequireAuth({ children }) {
   const { user, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
     <div className="text-white">Cargando...</div>
   </div>
   if (!user) return <Navigate to="/login" replace />
@@ -12,7 +12,7 @@ export function RequireAuth({ children }) {
 
 export function RequireActive({ children }) {
   const { profile, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
     <div className="text-white">Cargando...</div>
   </div>
   if (!profile) return <Navigate to="/login" replace />
@@ -23,7 +23,7 @@ export function RequireActive({ children }) {
 
 export function RequireAdmin({ children }) {
   const { profile, loading } = useAuth()
-  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1A1730' }}>
+  if (loading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
     <div className="text-white">Cargando...</div>
   </div>
   if (!profile || profile.rol !== 'admin') return <Navigate to="/home" replace />

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { initGlobalButtonSounds, startAmbient } from './lib/sounds'
+import { ThemeProvider } from './context/ThemeContext'
 
 initGlobalButtonSounds()
 import { AuthProvider } from './context/AuthContext'
@@ -36,6 +37,7 @@ export default function App() {
   }, [])
 
   return (
+    <ThemeProvider>
     <BrowserRouter>
       <AuthProvider>
         <Routes>
@@ -67,5 +69,6 @@ export default function App() {
         </Routes>
       </AuthProvider>
     </BrowserRouter>
+    </ThemeProvider>
   )
 }
