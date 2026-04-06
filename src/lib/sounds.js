@@ -1,10 +1,11 @@
 /**
- * sounds.js — Web Audio API sound effects (no external files)
+ * sounds.js — sound effects + stadium background audio
  *
- * All sounds are < 1 second and non-blocking.
- * Mute state is stored in localStorage and shared via module-level variable
- * so both the React hook and the global button listener respect it.
+ * Short effects use Web Audio API. Background ambience uses an HTML Audio
+ * element (stadium.MP3) so it loops perfectly without CPU generation.
+ * Mute state is stored in localStorage and shared via module-level variable.
  */
+import stadiumSrc from '../assets/stadium.MP3'
 
 // ─── Mute state (module-level, shared across all imports) ────────────────────
 let __muted = typeof localStorage !== 'undefined'
@@ -19,9 +20,12 @@ export function setMuted(value) {
   else startAmbient()
 }
 
-// ─── AudioContext singleton ───────────────────────────────────────────────────
+// ─── AudioContext singleton (for short effects) ───────────────────────────────
 let _ctx = null
-let _ambient = null
+
+// ─── Background audio element ─────────────────────────────────────────────────
+let _bgAudio = null
+let _fadeInterval = null
 
 function getCtx() {
   if (__muted) return null
@@ -147,81 +151,45 @@ export function initGlobalButtonSounds() {
   }, { passive: true })
 }
 
-// ─── Ambient stadium crowd (global, persistent) ──────────────────────────────
+// ─── Ambient stadium crowd — stadium.MP3 (global, persistent) ────────────────
 export function startAmbient() {
-  if (__muted || _ambient) return
-  const AC = window.AudioContext || window.webkitAudioContext
-  if (!AC) return
-  if (!_ctx || _ctx.state === 'closed') _ctx = new AC()
-  const c = _ctx
-  if (c.state === 'suspended') c.resume().catch(() => {})
+  if (__muted) return
+  if (_bgAudio && !_bgAudio.paused) return  // already playing
 
-  // Pink noise buffer (4 s, looping)
-  const rate = c.sampleRate
-  const buf = c.createBuffer(1, rate * 4, rate)
-  const d = buf.getChannelData(0)
-  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0
-  for (let i = 0; i < rate * 4; i++) {
-    const w = Math.random() * 2 - 1
-    b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759
-    b2=0.96900*b2+w*0.1538520; b3=0.86650*b3+w*0.3104856
-    b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980
-    d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)/7; b6=w*0.115926
+  if (!_bgAudio) {
+    _bgAudio = new Audio(stadiumSrc)
+    _bgAudio.loop = true
+    _bgAudio.volume = 0
   }
-  const noise = c.createBufferSource()
-  noise.buffer = buf
-  noise.loop = true
 
-  // EQ: shape to crowd voice range 180–2800 Hz
-  const hp = c.createBiquadFilter()
-  hp.type = 'highpass'; hp.frequency.value = 180
-  const lp = c.createBiquadFilter()
-  lp.type = 'lowpass'; lp.frequency.value = 2800
-  const mid = c.createBiquadFilter()
-  mid.type = 'peaking'; mid.frequency.value = 620; mid.Q.value = 0.9; mid.gain.value = 7
-
-  // Stadium echo: 150 ms delay with gentle feedback
-  const delay = c.createDelay(1.0)
-  delay.delayTime.value = 0.15
-  const fb = c.createGain()
-  fb.gain.value = 0.32
-  delay.connect(fb); fb.connect(delay)
-  const delayMix = c.createGain()
-  delayMix.gain.value = 0.25
-
-  // LFO: slow crowd swell 0.14 Hz ±0.012 on master gain
-  const lfo = c.createOscillator()
-  const lfoAmt = c.createGain()
-  lfo.type = 'sine'; lfo.frequency.value = 0.14
-  lfoAmt.gain.value = 0.012
-
-  // Master: fade in over 2 s to 0.055 (≈5–7 % volume)
-  const master = c.createGain()
-  const now = c.currentTime
-  master.gain.setValueAtTime(0, now)
-  master.gain.linearRampToValueAtTime(0.055, now + 2.0)
-
-  lfo.connect(lfoAmt); lfoAmt.connect(master.gain)
-  noise.connect(hp); hp.connect(lp); lp.connect(mid)
-  mid.connect(master)
-  mid.connect(delay); delay.connect(delayMix); delayMix.connect(master)
-  master.connect(c.destination)
-
-  noise.start(); lfo.start()
-  _ambient = { noise, lfo, master }
+  _bgAudio.play().then(() => {
+    // Fade in to 0.15 over 2 seconds (40 steps × 50 ms)
+    clearInterval(_fadeInterval)
+    const target = 0.15
+    const steps = 40
+    const stepVol = target / steps
+    let i = 0
+    _fadeInterval = setInterval(() => {
+      i++
+      _bgAudio.volume = Math.min(target, i * stepVol)
+      if (i >= steps) clearInterval(_fadeInterval)
+    }, 50)
+  }).catch(() => {})
 }
 
 export function stopAmbient(fadeMs = 800) {
-  if (!_ambient || !_ctx) return
-  const c = _ctx
-  const fadeSec = fadeMs / 1000
-  const now = c.currentTime
-  _ambient.master.gain.cancelScheduledValues(now)
-  _ambient.master.gain.setValueAtTime(_ambient.master.gain.value, now)
-  _ambient.master.gain.linearRampToValueAtTime(0, now + fadeSec)
-  const toStop = _ambient
-  _ambient = null
-  setTimeout(() => {
-    try { toStop.noise.stop(); toStop.lfo.stop(); toStop.master.disconnect() } catch (_) {}
-  }, fadeMs + 100)
+  if (!_bgAudio || _bgAudio.paused) return
+  clearInterval(_fadeInterval)
+  const steps = 20
+  const stepMs = fadeMs / steps
+  const startVol = _bgAudio.volume
+  let i = 0
+  _fadeInterval = setInterval(() => {
+    i++
+    _bgAudio.volume = Math.max(0, startVol * (1 - i / steps))
+    if (i >= steps) {
+      clearInterval(_fadeInterval)
+      _bgAudio.pause()
+    }
+  }, stepMs)
 }
