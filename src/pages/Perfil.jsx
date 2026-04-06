@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import BottomNav from '../components/BottomNav'
+import { useSound } from '../hooks/useSound'
 
 export default function Perfil() {
   const { profile, signOut } = useAuth()
   const navigate = useNavigate()
   const [stats, setStats] = useState([])
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') !== 'false')
+  const { muted, toggleMute } = useSound()
 
   useEffect(() => {
     async function load() {
@@ -81,16 +83,28 @@ export default function Perfil() {
 
         {/* Configuración */}
         <div className="rounded-2xl overflow-hidden mb-4" style={{ backgroundColor: '#231E3D', border: '1px solid #3d3560' }}>
-          <div className="flex items-center justify-between px-4 py-4">
+          <div className="flex items-center justify-between px-4 py-4 border-b" style={{ borderColor: '#3d3560' }}>
             <div>
               <p className="font-semibold text-white">Modo oscuro</p>
               <p className="text-xs text-gray-400">Apariencia de la app</p>
             </div>
-            <button onClick={toggleDark}
+            <button data-nosound onClick={toggleDark}
               className="w-12 h-6 rounded-full transition-all relative"
               style={{ backgroundColor: darkMode ? '#7145D6' : '#3d3560' }}>
               <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
                 style={{ left: darkMode ? '26px' : '2px' }} />
+            </button>
+          </div>
+          <div className="flex items-center justify-between px-4 py-4">
+            <div>
+              <p className="font-semibold text-white">Sonidos</p>
+              <p className="text-xs text-gray-400">{muted ? 'Silenciado' : 'Activado'}</p>
+            </div>
+            <button data-nosound onClick={toggleMute}
+              className="w-12 h-6 rounded-full transition-all relative"
+              style={{ backgroundColor: muted ? '#3d3560' : '#7145D6' }}>
+              <span className="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all shadow"
+                style={{ left: muted ? '2px' : '26px' }} />
             </button>
           </div>
         </div>
