@@ -85,8 +85,8 @@ export function playGoal() {
   carrier.type = 'sine'; carrier.frequency.value = 2750
   mod.connect(modG); modG.connect(carrier.frequency)
   whistleG.gain.setValueAtTime(0, now)
-  whistleG.gain.linearRampToValueAtTime(0.14, now + 0.02)
-  whistleG.gain.setValueAtTime(0.14, now + 0.28)
+  whistleG.gain.linearRampToValueAtTime(0.07, now + 0.02)
+  whistleG.gain.setValueAtTime(0.07, now + 0.28)
   whistleG.gain.exponentialRampToValueAtTime(0.001, now + 0.5)
   carrier.connect(whistleG); whistleG.connect(c.destination)
   mod.start(now); carrier.start(now)
@@ -112,8 +112,8 @@ export function playGoal() {
   mid.type = 'peaking'; mid.frequency.value = 700; mid.Q.value = 0.8; mid.gain.value = 8
   const cheerG = c.createGain()
   cheerG.gain.setValueAtTime(0, now + 0.08)
-  cheerG.gain.linearRampToValueAtTime(0.10, now + 0.22)
-  cheerG.gain.setValueAtTime(0.10, now + 0.48)
+  cheerG.gain.linearRampToValueAtTime(0.05, now + 0.22)
+  cheerG.gain.setValueAtTime(0.05, now + 0.48)
   cheerG.gain.linearRampToValueAtTime(0, now + T)
   cheer.connect(hp); hp.connect(mid); mid.connect(cheerG); cheerG.connect(c.destination)
   cheer.start(now + 0.08); cheer.stop(now + T + 0.05)
