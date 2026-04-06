@@ -15,10 +15,13 @@ export function isMuted() { return __muted }
 export function setMuted(value) {
   __muted = value
   try { localStorage.setItem('sounds_muted', String(value)) } catch (_) {}
+  if (value) stopAmbient(600)
+  else startAmbient()
 }
 
 // ─── AudioContext singleton ───────────────────────────────────────────────────
 let _ctx = null
+let _ambient = null
 
 function getCtx() {
   if (__muted) return null
@@ -142,4 +145,83 @@ export function initGlobalButtonSounds() {
     else if (s === 'success') playSuccess()
     else playClick()
   }, { passive: true })
+}
+
+// ─── Ambient stadium crowd (global, persistent) ──────────────────────────────
+export function startAmbient() {
+  if (__muted || _ambient) return
+  const AC = window.AudioContext || window.webkitAudioContext
+  if (!AC) return
+  if (!_ctx || _ctx.state === 'closed') _ctx = new AC()
+  const c = _ctx
+  if (c.state === 'suspended') c.resume().catch(() => {})
+
+  // Pink noise buffer (4 s, looping)
+  const rate = c.sampleRate
+  const buf = c.createBuffer(1, rate * 4, rate)
+  const d = buf.getChannelData(0)
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0
+  for (let i = 0; i < rate * 4; i++) {
+    const w = Math.random() * 2 - 1
+    b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759
+    b2=0.96900*b2+w*0.1538520; b3=0.86650*b3+w*0.3104856
+    b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980
+    d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)/7; b6=w*0.115926
+  }
+  const noise = c.createBufferSource()
+  noise.buffer = buf
+  noise.loop = true
+
+  // EQ: shape to crowd voice range 180–2800 Hz
+  const hp = c.createBiquadFilter()
+  hp.type = 'highpass'; hp.frequency.value = 180
+  const lp = c.createBiquadFilter()
+  lp.type = 'lowpass'; lp.frequency.value = 2800
+  const mid = c.createBiquadFilter()
+  mid.type = 'peaking'; mid.frequency.value = 620; mid.Q.value = 0.9; mid.gain.value = 7
+
+  // Stadium echo: 150 ms delay with gentle feedback
+  const delay = c.createDelay(1.0)
+  delay.delayTime.value = 0.15
+  const fb = c.createGain()
+  fb.gain.value = 0.32
+  delay.connect(fb); fb.connect(delay)
+  const delayMix = c.createGain()
+  delayMix.gain.value = 0.25
+
+  // LFO: slow crowd swell 0.14 Hz ±0.012 on master gain
+  const lfo = c.createOscillator()
+  const lfoAmt = c.createGain()
+  lfo.type = 'sine'; lfo.frequency.value = 0.14
+  lfoAmt.gain.value = 0.012
+
+  // Master: fade in over 2 s to 0.055 (≈5–7 % volume)
+  const master = c.createGain()
+  const now = c.currentTime
+  master.gain.setValueAtTime(0, now)
+  master.gain.linearRampToValueAtTime(0.055, now + 2.0)
+
+  lfo.connect(lfoAmt); lfoAmt.connect(master.gain)
+  noise.connect(hp); hp.connect(lp); lp.connect(mid)
+  mid.connect(master)
+  mid.connect(delay); delay.connect(delayMix); delayMix.connect(master)
+  master.connect(c.destination)
+
+  noise.start(); lfo.start()
+  _ambient = { noise, lfo, master }
+}
+
+export function stopAmbient(fadeMs = 800) {
+  if (!_ambient || !_ctx) return
+  const c = _ctx
+  const fadeSec = fadeMs / 1000
+  const now = c.currentTime
+  _ambient.master.gain.cancelScheduledValues(now)
+  _ambient.master.gain.setValueAtTime(_ambient.master.gain.value, now)
+  _ambient.master.gain.linearRampToValueAtTime(0, now + fadeSec)
+  const toStop = _ambient
+  _ambient = null
+  setTimeout(() => {
+    try { toStop.noise.stop(); toStop.lfo.stop(); toStop.master.disconnect() } catch (_) {}
+  }, fadeMs + 100)
 }

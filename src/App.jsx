@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { initGlobalButtonSounds } from './lib/sounds'
+import { initGlobalButtonSounds, startAmbient } from './lib/sounds'
 
 initGlobalButtonSounds()
 import { AuthProvider } from './context/AuthContext'
@@ -24,6 +25,16 @@ import AdminResultados from './pages/admin/AdminResultados'
 import AdminTabla from './pages/admin/AdminTabla'
 
 export default function App() {
+  useEffect(() => {
+    const start = () => startAmbient()
+    document.addEventListener('click', start, { once: true, passive: true })
+    document.addEventListener('touchstart', start, { once: true, passive: true })
+    return () => {
+      document.removeEventListener('click', start)
+      document.removeEventListener('touchstart', start)
+    }
+  }, [])
+
   return (
     <BrowserRouter>
       <AuthProvider>
