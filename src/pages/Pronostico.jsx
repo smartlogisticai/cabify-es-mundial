@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import BottomNav from '../components/BottomNav'
 import FlagEmoji from '../components/FlagEmoji'
+import { playGoal } from '../lib/sounds'
 
 export default function Pronostico() {
   const { id } = useParams()
@@ -88,6 +89,7 @@ export default function Pronostico() {
       ({ error: err } = await supabase.from('pronosticos').insert(data))
     }
     if (err) { setError(err.message); setSaving(false); return }
+    playGoal()
     setSaved(true)
     setSaving(false)
     setTimeout(() => navigate('/home'), 1200)
@@ -141,11 +143,11 @@ export default function Pronostico() {
               </span>
               {!cerrado && (
                 <div className="flex items-center gap-2 mt-1">
-                  <button
+                  <button data-sound="tick"
                     onClick={() => setGolesLocal(g => Math.max(0, g - 1))}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
                     style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
-                  <button
+                  <button data-sound="tick"
                     onClick={() => setGolesLocal(g => g + 1)}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
                     style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
@@ -174,11 +176,11 @@ export default function Pronostico() {
               </span>
               {!cerrado && (
                 <div className="flex items-center gap-2 mt-1">
-                  <button
+                  <button data-sound="tick"
                     onClick={() => setGolesVisitante(g => Math.max(0, g - 1))}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
                     style={{ backgroundColor: '#3d3560', color: '#fff' }}>−</button>
-                  <button
+                  <button data-sound="tick"
                     onClick={() => setGolesVisitante(g => g + 1)}
                     className="w-9 h-9 rounded-xl font-bold text-lg active:scale-90 transition-transform"
                     style={{ backgroundColor: '#7145D6', color: '#fff' }}>+</button>
@@ -326,7 +328,7 @@ export default function Pronostico() {
         {error && <p className="text-red-400 text-sm text-center mt-3">{error}</p>}
 
         {!cerrado && (
-          <button onClick={handleSave} disabled={saving || saved}
+          <button data-nosound onClick={handleSave} disabled={saving || saved}
             className="w-full py-4 rounded-2xl font-bold text-white text-lg mt-5 disabled:opacity-60 active:scale-95 transition-transform"
             style={{ backgroundColor: saved ? '#1D9E75' : '#7145D6' }}>
             {saved ? '✓ Pronóstico guardado' : saving ? 'Guardando...' : pronostico ? 'Actualizar pronóstico' : 'Guardar pronóstico'}

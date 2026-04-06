@@ -80,6 +80,7 @@ export default function AdminPagos() {
                   </span>
                 </div>
                 <button
+                  data-sound="success"
                   onClick={() => confirmarPago(u.id)}
                   disabled={confirming === u.id}
                   className="w-full py-2.5 rounded-xl font-bold text-white text-sm disabled:opacity-60"

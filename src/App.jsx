@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { initGlobalButtonSounds } from './lib/sounds'
+
+initGlobalButtonSounds()
 import { AuthProvider } from './context/AuthContext'
 import { RequireAuth, RequireActive, RequireAdmin } from './components/ProtectedRoute'
 
