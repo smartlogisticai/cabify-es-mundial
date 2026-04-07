@@ -5,7 +5,6 @@ import FlagEmoji from '../components/FlagEmoji'
 
 export default function Resultados() {
   const [partidos, setPartidos] = useState([])
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0])
   const [abiertos, setAbiertos] = useState({})
   const [pronosticos, setPronosticos] = useState({})
   const [loading, setLoading] = useState(true)
@@ -16,14 +15,13 @@ export default function Resultados() {
       const { data } = await supabase
         .from('partidos')
         .select('*')
-        .gte('fecha_hora', fecha + 'T00:00:00')
-        .lte('fecha_hora', fecha + 'T23:59:59')
-        .order('fecha_hora')
+        .eq('estado', 'terminado')
+        .order('updated_at', { ascending: false })
       setPartidos(data || [])
       setLoading(false)
     }
     load()
-  }, [fecha])
+  }, [])
 
   async function loadPronosticos(partidoId) {
     if (pronosticos[partidoId]) return
@@ -46,13 +44,6 @@ export default function Resultados() {
     <div className="min-h-screen pb-24" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="px-5 pt-10 pb-4" style={{ background: 'linear-gradient(160deg, var(--bg-tertiary) 0%, var(--bg-primary) 80%)' }}>
         <h1 className="text-2xl font-extrabold text-white">⚽ Resultados</h1>
-        <input
-          type="date"
-          value={fecha}
-          onChange={e => setFecha(e.target.value)}
-          className="mt-3 px-3 py-2 rounded-xl text-white text-sm outline-none"
-          style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border)' }}
-        />
       </div>
 
       <div className="px-5 mt-4">
