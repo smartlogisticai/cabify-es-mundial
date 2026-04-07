@@ -165,7 +165,7 @@ export function startAmbient() {
   _bgAudio.play().then(() => {
     // Fade in to 0.15 over 2 seconds (40 steps × 50 ms)
     clearInterval(_fadeInterval)
-    const target = 0.20
+    const target = 0.30
     const steps = 40
     const stepVol = target / steps
     let i = 0
