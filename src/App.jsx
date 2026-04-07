@@ -20,6 +20,7 @@ import Tabla from './pages/Tabla'
 import Resultados from './pages/Resultados'
 import Historial from './pages/Historial'
 import Perfil from './pages/Perfil'
+import PerfilPublico from './pages/PerfilPublico'
 import AdminLayout from './pages/admin/AdminLayout'
 import AdminPagos from './pages/admin/AdminPagos'
 import AdminResultados from './pages/admin/AdminResultados'
@@ -55,6 +56,7 @@ export default function App() {
           <Route path="/resultados" element={<RequireActive><Resultados /></RequireActive>} />
           <Route path="/historial" element={<RequireActive><Historial /></RequireActive>} />
           <Route path="/perfil" element={<RequireActive><Perfil /></RequireActive>} />
+          <Route path="/perfil/:userId" element={<RequireActive><PerfilPublico /></RequireActive>} />
 
           <Route path="/admin" element={
             <RequireAuth><RequireAdmin><AdminLayout /></RequireAdmin></RequireAuth>

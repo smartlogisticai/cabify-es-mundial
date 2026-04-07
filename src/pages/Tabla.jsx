@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import BottomNav from '../components/BottomNav'
@@ -11,6 +12,7 @@ const FASES = [
 
 export default function Tabla() {
   const { profile } = useAuth()
+  const navigate = useNavigate()
   const [fase, setFase] = useState('grupos')
   const [tabla, setTabla] = useState([])
   const [loading, setLoading] = useState(true)
@@ -74,10 +76,13 @@ export default function Tabla() {
                     {medal || `#${idx + 1}`}
                   </span>
                   <div className="flex-1">
-                    <p className="font-bold text-white text-sm">
+                    <button
+                      data-nosound
+                      onClick={() => navigate(`/perfil/${row.user_id}`)}
+                      className="font-bold text-white text-sm text-left active:opacity-70">
                       {row.users?.alias || row.users?.nombre}
                       {isMe && <span className="ml-2 text-xs" style={{ color: 'var(--text-accent)' }}>(tú)</span>}
-                    </p>
+                    </button>
                   </div>
                   <span className="font-extrabold text-lg" style={{ color: isMe ? 'var(--text-accent)' : '#fff' }}>
                     {row.puntos}
