@@ -45,7 +45,7 @@ export function playClick() {
   osc.type = 'sine'
   osc.frequency.setValueAtTime(260, now)
   osc.frequency.exponentialRampToValueAtTime(85, now + 0.055)
-  g.gain.setValueAtTime(0.40, now)
+  g.gain.setValueAtTime(1.60, now)
   g.gain.exponentialRampToValueAtTime(0.001, now + 0.065)
   osc.connect(g); g.connect(c.destination)
   osc.start(now); osc.stop(now + 0.07)
@@ -64,7 +64,7 @@ export function playTick() {
   const hp = c.createBiquadFilter()
   hp.type = 'highpass'; hp.frequency.value = 4500
   const g = c.createGain()
-  g.gain.setValueAtTime(0.60, now)
+  g.gain.setValueAtTime(2.40, now)
   g.gain.exponentialRampToValueAtTime(0.001, now + 0.012)
   src.connect(hp); hp.connect(g); g.connect(c.destination)
   src.start(now)
@@ -85,8 +85,8 @@ export function playGoal() {
   carrier.type = 'sine'; carrier.frequency.value = 2750
   mod.connect(modG); modG.connect(carrier.frequency)
   whistleG.gain.setValueAtTime(0, now)
-  whistleG.gain.linearRampToValueAtTime(0.28, now + 0.02)
-  whistleG.gain.setValueAtTime(0.28, now + 0.28)
+  whistleG.gain.linearRampToValueAtTime(0.56, now + 0.02)
+  whistleG.gain.setValueAtTime(0.56, now + 0.28)
   whistleG.gain.exponentialRampToValueAtTime(0.001, now + 0.5)
   carrier.connect(whistleG); whistleG.connect(c.destination)
   mod.start(now); carrier.start(now)
@@ -112,8 +112,8 @@ export function playGoal() {
   mid.type = 'peaking'; mid.frequency.value = 700; mid.Q.value = 0.8; mid.gain.value = 8
   const cheerG = c.createGain()
   cheerG.gain.setValueAtTime(0, now + 0.08)
-  cheerG.gain.linearRampToValueAtTime(0.20, now + 0.22)
-  cheerG.gain.setValueAtTime(0.20, now + 0.48)
+  cheerG.gain.linearRampToValueAtTime(0.80, now + 0.22)
+  cheerG.gain.setValueAtTime(0.80, now + 0.48)
   cheerG.gain.linearRampToValueAtTime(0, now + T)
   cheer.connect(hp); hp.connect(mid); mid.connect(cheerG); cheerG.connect(c.destination)
   cheer.start(now + 0.08); cheer.stop(now + T + 0.05)
@@ -130,8 +130,8 @@ export function playSuccess() {
     osc.type = 'sine'
     osc.frequency.value = freq
     g.gain.setValueAtTime(0, t)
-    g.gain.linearRampToValueAtTime(0.30, t + 0.015)
-    g.gain.setValueAtTime(0.60, t + 0.07)
+    g.gain.linearRampToValueAtTime(1.20, t + 0.015)
+    g.gain.setValueAtTime(2.40, t + 0.07)
     g.gain.exponentialRampToValueAtTime(0.001, t + 0.28)
     osc.connect(g); g.connect(c.destination)
     osc.start(t); osc.stop(t + 0.30)
