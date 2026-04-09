@@ -160,10 +160,10 @@ export function startAmbient() {
     _bgAudio = new Audio(stadiumSrc)
     _bgAudio.loop = true
     _bgAudio.volume = 0
+    _bgAudio.onerror = (e) => console.error('[ambient] error cargando audio:', e, _bgAudio.error)
   }
 
   _bgAudio.play().then(() => {
-    // Fade in to 0.15 over 2 seconds (40 steps × 50 ms)
     clearInterval(_fadeInterval)
     const target = 1.0
     const steps = 40
@@ -174,7 +174,7 @@ export function startAmbient() {
       _bgAudio.volume = Math.min(target, i * stepVol)
       if (i >= steps) clearInterval(_fadeInterval)
     }, 50)
-  }).catch(() => {})
+  }).catch((err) => console.error('[ambient] play() rechazado:', err))
 }
 
 export function stopAmbient(fadeMs = 800) {
